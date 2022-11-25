@@ -15,7 +15,9 @@ public class Guerrero {
     String nombre;
     int vida =100;
     boolean usada=false;
-    public Guerrero() {
+    public Guerrero(String name, String tipo) {
+        this.nombre=name;
+        this.tipo=tipo;
         /*tipo[0]="FUEGO";
         tipo[1]="AIRE";
         tipo[2]="AGUA";

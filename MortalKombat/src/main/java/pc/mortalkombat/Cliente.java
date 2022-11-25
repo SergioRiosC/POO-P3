@@ -42,6 +42,31 @@ public class Cliente {
             
             out.writeUTF(username);
             out.writeUTF(password);
+            //Gerrero #1
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            
+            //Gerrero #2
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            
+            //Gerrero #3
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            
+            //Gerrero #4
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            
+            
             ClienteHilo hilo = new ClienteHilo(in, out);
             hilo.start();
             hilo.join();

@@ -54,13 +54,45 @@ public class Servidor {
                     MA.guardarUsuario(u);
                     p.jugadores.add(u);
                 }
+                //Gerrero #1
+                out.writeUTF("Elije el nombre de tu guerrero #1");
+                String nombre=in.readUTF();
+                out.writeUTF("Elije el tipo de tu guerrero #1");
+                String tipo=in.readUTF();
+                u.generarGuerreros(nombre, 0,tipo);
+                
+                //Gerrero #2
+                out.writeUTF("Elije el nombre de tu guerrero #2");
+                String nombre2=in.readUTF();
+                out.writeUTF("Elije el tipo de tu guerrero #2");
+                String tipo2=in.readUTF();
+                u.generarGuerreros(nombre2, 1,tipo2);
+                
+                //Gerrero #3
+                out.writeUTF("Elije el nombre de tu guerrero #3");
+                String nombre3=in.readUTF();
+                out.writeUTF("Elije el tipo de tu guerrero #3");
+                String tipo3=in.readUTF();
+                u.generarGuerreros(nombre3, 2,tipo3);
+                
+                //Gerrero #4
+                out.writeUTF("Elije el nombre de tu guerrero #4");
+                String nombre4=in.readUTF();
+                out.writeUTF("Elije el tipo de tu guerrero #4");
+                String tipo4=in.readUTF();
+                u.generarGuerreros(nombre4, 3,tipo4);
+                
+                
+                
+                
+                
 
-                for (Usuario jugador : p.jugadores) {
+                /*for (Usuario jugador : p.jugadores) {
                     if (jugador.getUsername() == username) {
                         jugador.generarGuerreros();
                         break;
                     }
-                }
+                }*/
 
                 out.writeUTF("Bienvenido a la partida " + username);
 

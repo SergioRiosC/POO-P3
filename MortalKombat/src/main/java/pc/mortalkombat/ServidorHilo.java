@@ -21,16 +21,17 @@ public class ServidorHilo extends Thread {
     DataOutputStream out;
     ArrayList<Usuario> jugadores;
     Usuario usuarioActual;
+
     public ServidorHilo(DataInputStream in, DataOutputStream out, ArrayList<Usuario> jugadores, Usuario u) {
         this.in = in;
         this.out = out;
-        this.jugadores=jugadores;
-        this.usuarioActual=u;
+        this.jugadores = jugadores;
+        this.usuarioActual = u;
     }
 
     @Override
     public void run() {
-        
+
         try {
             while (true) {
                 System.out.println("ESCUCHANDO...");
@@ -40,25 +41,25 @@ public class ServidorHilo extends Thread {
 
                 switch (mensajeCliente[1].toLowerCase()) {
                     case "atacar":
-                        Usuario jugadorAAtacar=null;
-                        String[] tipoArma=null;
-                        int[] dañoArma=null;
-                        
+                        Usuario jugadorAAtacar = null;
+                        String[] tipoArma = null;
+                        int[] dañoArma = null;
+
                         for (Usuario jugador : jugadores) {
-                            System.out.println("USUARIO: "+jugador.getUsername());
-                            System.out.println("MENSAJE[2] "+mensajeCliente[2]);
-                            if(jugador.getUsername().equals(mensajeCliente[2])){
-                               jugadorAAtacar=jugador;
+                            System.out.println("USUARIO: " + jugador.getUsername());
+                            System.out.println("MENSAJE[2] " + mensajeCliente[2]);
+                            if (jugador.getUsername().equals(mensajeCliente[2])) {
+                                jugadorAAtacar = jugador;
                                 break;
                             }
                         }
-                        if(jugadorAAtacar!=null){
+                        if (jugadorAAtacar != null) {
                             for (Guerrero guerrero : usuarioActual.getGuerreros()) {
-                                if(guerrero.nombre.equals(mensajeCliente[3])){
+                                if (guerrero.nombre.equals(mensajeCliente[3])) {
                                     for (Arma arma : guerrero.armas) {
-                                        if(arma.nombre.equals(mensajeCliente[4])){
-                                            tipoArma=arma.tipo;
-                                            dañoArma=arma.ataque;
+                                        if (arma.nombre.equals(mensajeCliente[4])) {
+                                            tipoArma = arma.tipo;
+                                            dañoArma = arma.ataque;
                                             break;
                                         }
                                     }
@@ -66,18 +67,23 @@ public class ServidorHilo extends Thread {
                                 }
                             }
                         }
-                        
-                        if(tipoArma!=null && dañoArma!=null){
-                            int i=0;
+
+                        if (tipoArma != null && dañoArma != null) {
+
                             for (Guerrero guerrero : jugadorAAtacar.getGuerreros()) {
-                                guerrero.vida-=dañoArma[i];
-                                System.out.println("DAÑO ENEMIGO: "+guerrero.nombre+" -> "+guerrero.vida);
+                                int i = 0;
+                                for (String tipo : tipoArma) {
+                                    if (tipo.equals(guerrero.tipo)) {
+                                        guerrero.vida = -dañoArma[i];
+                                        respuesta+= "Ataque realizado: "+guerrero.nombre+" -> "+guerrero.vida+"\n";
+                                        break;
+                                    }
+                                    i++;
+                                }
                             }
                         }
-                        
-                        
-                        
-                        respuesta="Jugador no encontrado";
+
+                        //respuesta = "Jugador no encontrado";
                         break;
                     case "rendirse":
                         respuesta = "rendido";

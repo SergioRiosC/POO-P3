@@ -34,10 +34,11 @@ public class Usuario implements Serializable{
         return username;
     }
 
-   public void generarGuerreros(){
-       for (int i=0;i<guerreros.length;i++) {
+   public void generarGuerreros(String name, int i,String tipo){
+       /*for (int i=0;i<guerreros.length;i++) {
             guerreros[i]=new Guerrero();
-        }
+        }*/
+       guerreros[i]=new Guerrero(name,tipo);
    }
 
     public Guerrero[] getGuerreros() {
