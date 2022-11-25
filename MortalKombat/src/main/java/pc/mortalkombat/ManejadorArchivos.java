@@ -48,5 +48,58 @@ public class ManejadorArchivos {
             return 1;
         }
     }
+    public int crear_carpeta(String ruta){
+        File archivo = new File(ruta);
+        if(archivo.mkdir()){
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+    
+    public void guardarUsuario(Usuario usr){
+        
+        FileOutputStream fichero = null;
+        try {
+            fichero = new FileOutputStream("archivos/" + usr.getUsername() + "/estadisticas.txt",false);
+            
+            ObjectOutputStream tuberia = new ObjectOutputStream(fichero);
+            tuberia.writeObject(usr);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                fichero.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+    
+    public Usuario buscarusuario(String username){
+        Usuario u=null;
+        FileInputStream ficheroEntrada=null;
+        
+        try{
+            
+            ficheroEntrada= new FileInputStream("archivos/" + username + "/estadisticas.txt");
+            
+            ObjectInputStream tuberiaEntrada = new ObjectInputStream(ficheroEntrada);
+            u=(Usuario)tuberiaEntrada.readObject();
+        }catch(FileNotFoundException ex){
+            ex.printStackTrace();
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }catch(ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+        return u;
+    }
+    
+    
     
 }

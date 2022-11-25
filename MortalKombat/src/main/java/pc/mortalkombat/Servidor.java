@@ -17,30 +17,55 @@ import java.util.logging.Logger;
  * @author Sergio RC
  */
 public class Servidor {
-     
-    
-    
+
     public static void main(String[] args) {
-        ServerSocket servidor =null;
-        Socket sc=null;
-        final int PUERTO =5000;
+        ManejadorArchivos MA = new ManejadorArchivos();
+        ServerSocket servidor = null;
+        Socket sc = null;
+        final int PUERTO = 5000;
         DataInputStream in;
         DataOutputStream out;
-        
+        Partida p = new Partida();
+        Usuario u=null;
+
         try {
-            servidor =new ServerSocket(PUERTO);
+            servidor = new ServerSocket(PUERTO);
             System.out.println("INICIADO");
-            while (true){
-                
-                sc=servidor.accept();
+            while (true) {
+
+                sc = servidor.accept();
                 //System.out.println("Bievenido a la partida + FULANITO");
-                
-                in= new DataInputStream(sc.getInputStream());
-                out=new DataOutputStream(sc.getOutputStream());
-                
-                out.writeUTF("Bienvenido a la partida "+in.readUTF());
-                ServidorHilo hilo=new ServidorHilo(in, out);
-                
+
+                in = new DataInputStream(sc.getInputStream());
+                out = new DataOutputStream(sc.getOutputStream());
+
+                String username = in.readUTF();
+                String password = in.readUTF();
+                if (!revisa_usuario(username)) {
+                    if (MA.crear_carpeta("archivos/" + username) == 0) {
+                        MA.escribir("archivos/usuarios.txt", "#" + username + "-" + password);
+                        u = new Usuario(username, password);
+                        MA.guardarUsuario(u);
+                        p.jugadores.add(u);
+                    }
+
+                } else {
+                    u = MA.buscarusuario(username);
+                    MA.guardarUsuario(u);
+                    p.jugadores.add(u);
+                }
+
+                for (Usuario jugador : p.jugadores) {
+                    if (jugador.getUsername() == username) {
+                        jugador.generarGuerreros();
+                        break;
+                    }
+                }
+
+                out.writeUTF("Bienvenido a la partida " + username);
+
+                ServidorHilo hilo = new ServidorHilo(in, out, p.jugadores,u);
+
                 hilo.start();
                 System.out.println("CONEXION CLIENTE");
                 /*
@@ -53,16 +78,31 @@ public class Servidor {
                     Guerrero g=new Guerrero();
                 }*/
                 //out.writeUTF("SERVER: ACCEPT");
-                
+
                 //sc.close();
                 //System.out.println("CLIENTE DESCONECTADO");
             }
-            
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
+    private static Boolean revisa_usuario(String username) {
+        ManejadorArchivos MA = new ManejadorArchivos();
+        String todos = MA.leer("archivos/usuarios.txt");
+        String[] usuarios = todos.split("#");
+        String[] datos;
+
+        for (String usuario : usuarios) {
+            if (!usuario.equals("")) {
+                datos = usuario.split("-");
+                if (datos[0].equals(username)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

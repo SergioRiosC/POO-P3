@@ -23,16 +23,26 @@ public class Cliente {
     DataInputStream in;
     DataOutputStream out;
 
-    public Cliente(String username) {
+    public static void main(String[] args) {
+
         
-        
+        Scanner scanner = new Scanner(System.in);
+        scanner.useDelimiter("\n");
 
         try {
-            Socket sc = new Socket(HOST, PUERTO);
-            in = new DataInputStream(sc.getInputStream());
-            out = new DataOutputStream(sc.getOutputStream());
+            Socket sc = new Socket("127.0.0.1", 5000);
+            DataInputStream in = new DataInputStream(sc.getInputStream());
+            DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+            System.out.println("Ingresa tu USER: ");
+            String username = scanner.next();
+            
+            System.out.println("Ingresa tu PASSWORD: ");
+            String password = scanner.next();
+            
+            
             out.writeUTF(username);
-            ClienteHilo hilo=new ClienteHilo(in,out,username);
+            out.writeUTF(password);
+            ClienteHilo hilo = new ClienteHilo(in, out);
             hilo.start();
             hilo.join();
 
@@ -42,6 +52,8 @@ public class Cliente {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    
 
     public void enviarAServidor(String s) throws IOException {
         out.writeUTF(s);

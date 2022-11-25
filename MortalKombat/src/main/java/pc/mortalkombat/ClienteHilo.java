@@ -21,11 +21,12 @@ public class ClienteHilo extends Thread{
     DataOutputStream out;
     Scanner scanner =new Scanner(System.in);
     String username;
+    Usuario u;
 
-    public ClienteHilo(DataInputStream in, DataOutputStream out,String username) {
+    public ClienteHilo(DataInputStream in, DataOutputStream out) {
         this.in = in;
         this.out = out;
-        this.username=username;
+        
         scanner.useDelimiter("\n");
     }
 
@@ -37,7 +38,7 @@ public class ClienteHilo extends Thread{
             while(true){
                 //listo para mandar mensajes
                 System.out.println("ESCUCHANDO....");
-                out.writeUTF(username+"#"+scanner.next());
+                out.writeUTF(username+"-"+scanner.next());
                 
                 
                 //respuesta del Servidor

@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author Sergio RC
  */
-public class Usuario{
+public class Usuario implements Serializable{
     private String username;
     private String nombre;
     private String password;
@@ -24,12 +24,25 @@ public class Usuario{
     private int ataques_Fallidos=0;
     private int rendiciones=0;
 
-    public Usuario(String username, String nombre, String password) {
+    public Usuario(String username, String password) {
         this.username = username;
-        this.nombre = nombre;
         this.password = password;
+        
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+   public void generarGuerreros(){
+       for (int i=0;i<guerreros.length;i++) {
+            guerreros[i]=new Guerrero();
+        }
+   }
+
+    public Guerrero[] getGuerreros() {
+        return guerreros;
+    }
    
     
 }
