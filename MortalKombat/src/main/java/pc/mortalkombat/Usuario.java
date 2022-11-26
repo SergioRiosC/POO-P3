@@ -33,6 +33,10 @@ public class Usuario implements Serializable{
     public String getUsername() {
         return username;
     }
+    
+    public String getPassword(){
+        return password;
+    }
 
    public void generarGuerreros(String name, int i,String tipo){
        /*for (int i=0;i<guerreros.length;i++) {

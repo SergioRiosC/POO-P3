@@ -30,17 +30,16 @@ public class ManejadorArchivos {
             return data.toString();
         }
         catch (FileNotFoundException e){
-            return "1";
+            return "-1";
         }
 
     }
 
 
     public int escribir(String ruta, String data){
-        String info =leer(ruta);
         try{
             FileWriter escritor = new FileWriter(ruta);
-            escritor.write(info+data);
+            escritor.write(data);
             escritor.close();
             return 0;
         }
@@ -58,14 +57,20 @@ public class ManejadorArchivos {
         }
     }
     
-    public void guardarUsuario(Usuario usr){
+    public boolean guardarUsuario(Usuario usr){
         
         FileOutputStream fichero = null;
         try {
             fichero = new FileOutputStream("archivos/" + usr.getUsername() + "/estadisticas.txt",false);
-            
             ObjectOutputStream tuberia = new ObjectOutputStream(fichero);
             tuberia.writeObject(usr);
+            
+            System.out.println(usr.getPassword());
+            
+            escribir("archivos/" + usr.getUsername() + "/password.txt", usr.getPassword());
+            
+            
+            return true;
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
@@ -78,6 +83,7 @@ public class ManejadorArchivos {
             }
 
         }
+        return false;
     }
     
     public Usuario buscarusuario(String username){
