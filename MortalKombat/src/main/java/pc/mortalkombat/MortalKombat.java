@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
  */
 public class MortalKombat extends javax.swing.JFrame {
     ManejadorArchivos manejador = new ManejadorArchivos();
+    Usuario jugadorActual;
 
     /**
      * Creates new form Main
@@ -42,6 +43,7 @@ public class MortalKombat extends javax.swing.JFrame {
         password_registrarse = new javax.swing.JPasswordField();
         registrarse_but = new javax.swing.JButton();
         registrarse1 = new javax.swing.JToggleButton();
+        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -163,6 +165,19 @@ public class MortalKombat extends javax.swing.JFrame {
 
         pantallas.addTab("tab2", jPanel2);
 
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1128, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 746, Short.MAX_VALUE)
+        );
+
+        pantallas.addTab("tab3", jPanel3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -225,7 +240,8 @@ public class MortalKombat extends javax.swing.JFrame {
         if(!lectura.equals("-1")){
             
             if(lectura.equals(password)){
-                
+                pantallas.setSelectedIndex(2);
+                jugadorActual = manejador.buscarusuario(user);
             }
             else{
                 JOptionPane.showMessageDialog(pantallas, "Contraseña incorrecta!!!","ERROR", JOptionPane.ERROR_MESSAGE);
@@ -278,6 +294,7 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JButton login_but;
     private javax.swing.JTabbedPane pantallas;
     private javax.swing.JPasswordField password_login;
