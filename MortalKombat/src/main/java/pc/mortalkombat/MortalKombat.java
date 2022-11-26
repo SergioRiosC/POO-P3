@@ -4,6 +4,7 @@
  */
 package pc.mortalkombat;
 
+import java.awt.Color;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,12 +14,16 @@ import javax.swing.JOptionPane;
 public class MortalKombat extends javax.swing.JFrame {
     ManejadorArchivos manejador = new ManejadorArchivos();
     Usuario jugadorActual;
+    Imagenes imagenes = new Imagenes();
 
     /**
      * Creates new form Main
      */
     public MortalKombat() {
         initComponents();
+        jugar.setIcon(imagenes.jugar);
+        configuracion.setIcon(imagenes.configuracion);
+        
     }
 
     /**
@@ -44,6 +49,11 @@ public class MortalKombat extends javax.swing.JFrame {
         registrarse_but = new javax.swing.JButton();
         registrarse1 = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        configuracion = new javax.swing.JButton();
+        configuracion_label = new javax.swing.JLabel();
+        jugar = new javax.swing.JButton();
+        jugar_label = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,15 +175,107 @@ public class MortalKombat extends javax.swing.JFrame {
 
         pantallas.addTab("tab2", jPanel2);
 
+        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
+
+        jLabel3.setFont(new java.awt.Font("Herculanum", 1, 70)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 255, 0));
+        jLabel3.setText("Menu Principal");
+
+        configuracion.setText("jButton1");
+        configuracion.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                configuracionMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                configuracionMouseMoved(evt);
+            }
+        });
+        configuracion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                configuracionFocusGained(evt);
+            }
+        });
+        configuracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configuracionActionPerformed(evt);
+            }
+        });
+
+        configuracion_label.setFont(new java.awt.Font("Herculanum", 0, 24)); // NOI18N
+        configuracion_label.setForeground(new java.awt.Color(255, 255, 255));
+        configuracion_label.setText("Configuracion");
+
+        jugar.setText("jButton1");
+        jugar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jugarMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jugarMouseMoved(evt);
+            }
+        });
+        jugar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jugarFocusGained(evt);
+            }
+        });
+        jugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jugarActionPerformed(evt);
+            }
+        });
+
+        jugar_label.setFont(new java.awt.Font("Herculanum", 0, 24)); // NOI18N
+        jugar_label.setForeground(new java.awt.Color(255, 255, 255));
+        jugar_label.setText("Jugar");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1128, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(270, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(194, 194, 194))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(configuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(configuracion_label)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(760, Short.MAX_VALUE)
+                    .addComponent(jugar, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(28, 28, 28)))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(897, Short.MAX_VALUE)
+                    .addComponent(jugar_label)
+                    .addGap(154, 154, 154)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 746, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addGap(27, 27, 27)
+                .addComponent(configuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(configuracion_label)
+                .addGap(25, 25, 25))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(105, Short.MAX_VALUE)
+                    .addComponent(jugar, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(81, 81, 81)))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                    .addContainerGap(694, Short.MAX_VALUE)
+                    .addComponent(jugar_label)
+                    .addGap(27, 27, 27)))
         );
 
         pantallas.addTab("tab3", jPanel3);
@@ -253,6 +355,45 @@ public class MortalKombat extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_login_butActionPerformed
 
+    private void configuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_configuracionActionPerformed
+
+    private void configuracionMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configuracionMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_configuracionMouseDragged
+
+    private void configuracionMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configuracionMouseMoved
+        // TODO add your handling code here:
+        jugar_label.setForeground(Color.white);
+        configuracion_label.setForeground(Color.red);
+    }//GEN-LAST:event_configuracionMouseMoved
+
+    private void configuracionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_configuracionFocusGained
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_configuracionFocusGained
+
+    private void jugarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugarMouseDragged
+        // TODO add your handling code here
+    }//GEN-LAST:event_jugarMouseDragged
+
+    private void jugarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugarMouseMoved
+        // TODO add your handling code here:
+        configuracion_label.setForeground(Color.white);
+        jugar_label.setForeground(Color.red);
+    }//GEN-LAST:event_jugarMouseMoved
+
+    private void jugarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jugarFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jugarFocusGained
+
+    private void jugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugarActionPerformed
+        // TODO add your handling code here:
+        System.out.println("JUGAR");
+    }//GEN-LAST:event_jugarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -290,11 +431,16 @@ public class MortalKombat extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton configuracion;
+    private javax.swing.JLabel configuracion_label;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton jugar;
+    private javax.swing.JLabel jugar_label;
     private javax.swing.JButton login_but;
     private javax.swing.JTabbedPane pantallas;
     private javax.swing.JPasswordField password_login;
