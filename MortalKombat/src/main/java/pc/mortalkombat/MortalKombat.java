@@ -55,6 +55,12 @@ public class MortalKombat extends javax.swing.JFrame {
         crear_partida.setVisible(true);
         unirse.setVisible(true);
     }
+    
+    private void limpiarTodos(){
+        ip.setText("");
+        clave.setText("");
+        clave_crear.setText("");
+    }
 
     /**
      * Creates new form Main
@@ -548,6 +554,7 @@ public class MortalKombat extends javax.swing.JFrame {
         // TODO add your handling code here:
         esconderTodos();
         mostrarPrincipales();
+        limpiarTodos();
     }//GEN-LAST:event_atrasActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
