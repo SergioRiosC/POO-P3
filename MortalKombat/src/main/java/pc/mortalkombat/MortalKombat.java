@@ -15,6 +15,46 @@ public class MortalKombat extends javax.swing.JFrame {
     ManejadorArchivos manejador = new ManejadorArchivos();
     Usuario jugadorActual;
     Imagenes imagenes = new Imagenes();
+    
+    private void esconderTodos(){
+        ip.setVisible(false);
+        clave.setVisible(false);
+        ip_text.setVisible(false);
+        clave_text.setVisible(false);
+        unirse_unirse.setVisible(false);
+        
+        clave_crear.setVisible(false);
+        clave_crear_text.setVisible(false);
+        crear_crear.setVisible(false);
+        
+        atras.setVisible(false);
+    }
+    
+    private void mostrarUnirse(){
+        ip.setVisible(true);
+        clave.setVisible(true);
+        ip_text.setVisible(true);
+        clave_text.setVisible(true);
+        unirse_unirse.setVisible(true);
+        atras.setVisible(true);
+    }
+    
+    private void esconderPrincipales(){
+        crear_partida.setVisible(false);
+        unirse.setVisible(false);
+    }
+    
+    private void mostrarCrear(){
+        clave_crear.setVisible(true);
+        clave_crear_text.setVisible(true);
+        atras.setVisible(true);
+        crear_crear.setVisible(true);
+    }
+    
+    private void mostrarPrincipales(){
+        crear_partida.setVisible(true);
+        unirse.setVisible(true);
+    }
 
     /**
      * Creates new form Main
@@ -23,7 +63,7 @@ public class MortalKombat extends javax.swing.JFrame {
         initComponents();
         jugar.setIcon(imagenes.jugar);
         configuracion.setIcon(imagenes.configuracion);
-        
+        esconderTodos();
     }
 
     /**
@@ -35,6 +75,8 @@ public class MortalKombat extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        unirse_partida2 = new javax.swing.JButton();
+        jColorChooser1 = new javax.swing.JColorChooser();
         pantallas = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -54,6 +96,24 @@ public class MortalKombat extends javax.swing.JFrame {
         configuracion_label = new javax.swing.JLabel();
         jugar = new javax.swing.JButton();
         jugar_label = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        atras = new javax.swing.JToggleButton();
+        crear_partida = new javax.swing.JToggleButton();
+        clave_crear = new javax.swing.JTextField();
+        ip = new javax.swing.JTextField();
+        unirse = new javax.swing.JToggleButton();
+        clave_crear_text = new javax.swing.JLabel();
+        ip_text = new javax.swing.JLabel();
+        clave = new javax.swing.JTextField();
+        clave_text = new javax.swing.JLabel();
+        unirse_unirse = new javax.swing.JToggleButton();
+        crear_crear = new javax.swing.JToggleButton();
+        jButton1 = new javax.swing.JButton();
+
+        unirse_partida2.setBackground(new java.awt.Color(204, 204, 204));
+        unirse_partida2.setForeground(new java.awt.Color(255, 255, 255));
+        unirse_partida2.setText("Unirse");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,7 +141,7 @@ public class MortalKombat extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(142, 142, 142)
                 .addComponent(username_login, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 401, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(password_login, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(173, 173, 173))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -108,7 +168,7 @@ public class MortalKombat extends javax.swing.JFrame {
                     .addComponent(password_login, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(119, 119, 119)
                 .addComponent(login_but, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 372, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(registrarse)
                 .addContainerGap())
         );
@@ -137,38 +197,40 @@ public class MortalKombat extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(429, 429, 429)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(142, 142, 142)
+                .addComponent(username_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(password_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(186, 186, 186))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(156, 156, 156)
+                .addGap(1040, 1040, 1040)
+                .addComponent(registrarse1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(username_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(password_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(167, 167, 167))
+                        .addGap(428, 428, 428)
+                        .addComponent(jLabel2))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(297, 297, 297)
-                        .addComponent(registrarse_but, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 436, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 884, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(registrarse1)))
-                .addContainerGap())
+                        .addGap(414, 414, 414)
+                        .addComponent(registrarse_but, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addGap(67, 67, 67)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(username_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(password_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(119, 119, 119)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(password_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(username_registrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(63, 63, 63)
                 .addComponent(registrarse_but, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 372, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(registrarse1)
                 .addContainerGap())
         );
@@ -234,51 +296,129 @@ public class MortalKombat extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(270, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(194, 194, 194))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addComponent(configuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jugar, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(configuracion_label)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addContainerGap(760, Short.MAX_VALUE)
-                    .addComponent(jugar, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(28, 28, 28)))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addContainerGap(897, Short.MAX_VALUE)
+                    .addContainerGap(633, Short.MAX_VALUE)
                     .addComponent(jugar_label)
                     .addGap(154, 154, 154)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addGap(27, 27, 27)
-                .addComponent(configuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3)
+                        .addGap(27, 27, 27)
+                        .addComponent(configuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addComponent(jugar, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(configuracion_label)
                 .addGap(25, 25, 25))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addContainerGap(105, Short.MAX_VALUE)
-                    .addComponent(jugar, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(81, 81, 81)))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                    .addContainerGap(694, Short.MAX_VALUE)
+                    .addContainerGap(685, Short.MAX_VALUE)
                     .addComponent(jugar_label)
                     .addGap(27, 27, 27)))
         );
 
         pantallas.addTab("tab3", jPanel3);
+
+        jPanel5.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Herculanum", 1, 70)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 255, 0));
+        jLabel4.setText("PARTIDA - MENU");
+        jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, -1, -1));
+
+        atras.setBackground(new java.awt.Color(204, 204, 204));
+        atras.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        atras.setForeground(new java.awt.Color(255, 255, 255));
+        atras.setText("Atras");
+        atras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atrasActionPerformed(evt);
+            }
+        });
+        jPanel5.add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, 140, 30));
+
+        crear_partida.setBackground(new java.awt.Color(204, 204, 204));
+        crear_partida.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        crear_partida.setForeground(new java.awt.Color(255, 255, 255));
+        crear_partida.setText("Crear Partida");
+        crear_partida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crear_partidaActionPerformed(evt);
+            }
+        });
+        jPanel5.add(crear_partida, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 150, 140, 30));
+        jPanel5.add(clave_crear, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 320, 410, 50));
+        jPanel5.add(ip, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 410, 50));
+
+        unirse.setBackground(new java.awt.Color(204, 204, 204));
+        unirse.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        unirse.setForeground(new java.awt.Color(255, 255, 255));
+        unirse.setText("Unirse");
+        unirse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unirseActionPerformed(evt);
+            }
+        });
+        jPanel5.add(unirse, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 150, 140, 30));
+
+        clave_crear_text.setFont(new java.awt.Font("Herculanum", 0, 36)); // NOI18N
+        clave_crear_text.setForeground(new java.awt.Color(255, 255, 255));
+        clave_crear_text.setText("clave");
+        jPanel5.add(clave_crear_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 380, -1, -1));
+
+        ip_text.setFont(new java.awt.Font("Herculanum", 0, 36)); // NOI18N
+        ip_text.setForeground(new java.awt.Color(255, 255, 255));
+        ip_text.setText("ip");
+        jPanel5.add(ip_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 260, -1, -1));
+        jPanel5.add(clave, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 200, 410, 50));
+
+        clave_text.setFont(new java.awt.Font("Herculanum", 0, 36)); // NOI18N
+        clave_text.setForeground(new java.awt.Color(255, 255, 255));
+        clave_text.setText("clave");
+        jPanel5.add(clave_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 260, -1, -1));
+
+        unirse_unirse.setBackground(new java.awt.Color(204, 204, 204));
+        unirse_unirse.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        unirse_unirse.setForeground(new java.awt.Color(255, 255, 255));
+        unirse_unirse.setText("Unirse");
+        jPanel5.add(unirse_unirse, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 140, 30));
+
+        crear_crear.setBackground(new java.awt.Color(204, 204, 204));
+        crear_crear.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        crear_crear.setForeground(new java.awt.Color(255, 255, 255));
+        crear_crear.setText("Crear");
+        jPanel5.add(crear_crear, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 440, 140, 30));
+
+        jButton1.setText("Menu Principal");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 710, -1, -1));
+
+        pantallas.addTab("tab4", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -286,7 +426,7 @@ public class MortalKombat extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pantallas, javax.swing.GroupLayout.DEFAULT_SIZE, 1128, Short.MAX_VALUE)
+                .addComponent(pantallas)
                 .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
@@ -297,10 +437,42 @@ public class MortalKombat extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseActionPerformed
+    private void jugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugarActionPerformed
         // TODO add your handling code here:
-        pantallas.setSelectedIndex(1);
-    }//GEN-LAST:event_registrarseActionPerformed
+        pantallas.setSelectedIndex(3);
+    }//GEN-LAST:event_jugarActionPerformed
+
+    private void jugarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jugarFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jugarFocusGained
+
+    private void jugarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugarMouseMoved
+        // TODO add your handling code here:
+        configuracion_label.setForeground(Color.white);
+        jugar_label.setForeground(Color.red);
+    }//GEN-LAST:event_jugarMouseMoved
+
+    private void jugarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugarMouseDragged
+        // TODO add your handling code here
+    }//GEN-LAST:event_jugarMouseDragged
+
+    private void configuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_configuracionActionPerformed
+
+    private void configuracionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_configuracionFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_configuracionFocusGained
+
+    private void configuracionMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configuracionMouseMoved
+        // TODO add your handling code here:
+        jugar_label.setForeground(Color.white);
+        configuracion_label.setForeground(Color.red);
+    }//GEN-LAST:event_configuracionMouseMoved
+
+    private void configuracionMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configuracionMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_configuracionMouseDragged
 
     private void registrarse1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarse1ActionPerformed
         // TODO add your handling code here:
@@ -312,19 +484,19 @@ public class MortalKombat extends javax.swing.JFrame {
         String user = username_registrarse.getText();
         String password = String.valueOf(password_registrarse.getPassword());
         Usuario usr = new Usuario(user, password);
-        
+
         int existe = manejador.crear_carpeta("archivos/" + user);
-        
+
         if(existe == 0){
             boolean creador = manejador.guardarUsuario(usr);
             if(creador){
-                JOptionPane.showMessageDialog(pantallas, "Usuario " + user + " creado correctamente!!!","CONFIRMACION", JOptionPane.INFORMATION_MESSAGE); 
+                JOptionPane.showMessageDialog(pantallas, "Usuario " + user + " creado correctamente!!!","CONFIRMACION", JOptionPane.INFORMATION_MESSAGE);
                 username_login.setText(user);
                 password_login.setText(password);
                 pantallas.setSelectedIndex(0);
             }
             else{
-                JOptionPane.showMessageDialog(pantallas, "Error al crear el usuario!!","ERROR", JOptionPane.ERROR_MESSAGE); 
+                JOptionPane.showMessageDialog(pantallas, "Error al crear el usuario!!","ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
         else{
@@ -332,15 +504,20 @@ public class MortalKombat extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_registrarse_butActionPerformed
 
+    private void registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseActionPerformed
+        // TODO add your handling code here:
+        pantallas.setSelectedIndex(1);
+    }//GEN-LAST:event_registrarseActionPerformed
+
     private void login_butActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_butActionPerformed
         // TODO add your handling code here:
         String user = username_login.getText();
         String password = String.valueOf(password_login.getPassword());
-        
+
         String lectura = manejador.leer("archivos/" + user + "/password.txt");
-        
+
         if(!lectura.equals("-1")){
-            
+
             if(lectura.equals(password)){
                 pantallas.setSelectedIndex(2);
                 jugadorActual = manejador.buscarusuario(user);
@@ -348,51 +525,35 @@ public class MortalKombat extends javax.swing.JFrame {
             else{
                 JOptionPane.showMessageDialog(pantallas, "Contraseña incorrecta!!!","ERROR", JOptionPane.ERROR_MESSAGE);
             }
-            
+
         }
         else{
             JOptionPane.showMessageDialog(pantallas, "El usuario no existe!!!","ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_login_butActionPerformed
 
-    private void configuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionActionPerformed
+    private void unirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirseActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_configuracionActionPerformed
+        mostrarUnirse();
+        esconderPrincipales();
+    }//GEN-LAST:event_unirseActionPerformed
 
-    private void configuracionMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configuracionMouseDragged
+    private void crear_partidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_partidaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_configuracionMouseDragged
+        mostrarCrear();
+        esconderPrincipales();
+    }//GEN-LAST:event_crear_partidaActionPerformed
 
-    private void configuracionMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_configuracionMouseMoved
+    private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
         // TODO add your handling code here:
-        jugar_label.setForeground(Color.white);
-        configuracion_label.setForeground(Color.red);
-    }//GEN-LAST:event_configuracionMouseMoved
+        esconderTodos();
+        mostrarPrincipales();
+    }//GEN-LAST:event_atrasActionPerformed
 
-    private void configuracionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_configuracionFocusGained
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_configuracionFocusGained
-
-    private void jugarMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugarMouseDragged
-        // TODO add your handling code here
-    }//GEN-LAST:event_jugarMouseDragged
-
-    private void jugarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jugarMouseMoved
-        // TODO add your handling code here:
-        configuracion_label.setForeground(Color.white);
-        jugar_label.setForeground(Color.red);
-    }//GEN-LAST:event_jugarMouseMoved
-
-    private void jugarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jugarFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jugarFocusGained
-
-    private void jugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jugarActionPerformed
-        // TODO add your handling code here:
-        System.out.println("JUGAR");
-    }//GEN-LAST:event_jugarActionPerformed
+        pantallas.setSelectedIndex(2);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -431,14 +592,27 @@ public class MortalKombat extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton atras;
+    private javax.swing.JTextField clave;
+    private javax.swing.JTextField clave_crear;
+    private javax.swing.JLabel clave_crear_text;
+    private javax.swing.JLabel clave_text;
     private javax.swing.JButton configuracion;
     private javax.swing.JLabel configuracion_label;
+    private javax.swing.JToggleButton crear_crear;
+    private javax.swing.JToggleButton crear_partida;
+    private javax.swing.JTextField ip;
+    private javax.swing.JLabel ip_text;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JButton jugar;
     private javax.swing.JLabel jugar_label;
     private javax.swing.JButton login_but;
@@ -448,6 +622,9 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JToggleButton registrarse;
     private javax.swing.JToggleButton registrarse1;
     private javax.swing.JButton registrarse_but;
+    private javax.swing.JToggleButton unirse;
+    private javax.swing.JButton unirse_partida2;
+    private javax.swing.JToggleButton unirse_unirse;
     private javax.swing.JTextField username_login;
     private javax.swing.JTextField username_registrarse;
     // End of variables declaration//GEN-END:variables
