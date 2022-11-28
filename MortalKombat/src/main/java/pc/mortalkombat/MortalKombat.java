@@ -654,7 +654,9 @@ public class MortalKombat extends javax.swing.JFrame {
         // TODO add your handling code here:
         String user = username_registrarse.getText();
         String password = String.valueOf(password_registrarse.getPassword());
-        Usuario usr = new Usuario(user, password);
+        int puerto= Integer.parseInt( manejador.leer("archivos/puerto.txt"));
+        Usuario usr = new Usuario(user, password,puerto);
+        manejador.escribir("archivos/puerto.txt", String.valueOf(puerto+1));
 
         int existe = manejador.crear_carpeta("archivos/" + user);
 
@@ -690,7 +692,9 @@ public class MortalKombat extends javax.swing.JFrame {
             if (lectura.equals(password)) {
                 pantallas.setSelectedIndex(2);
                 jugadorActual = manejador.buscarusuario(user);
-                c = new Cliente("sebas", 8081);
+                System.out.println("PUERTO A USAR: "+jugadorActual.port);
+                c = new Cliente("sebas", jugadorActual.port);
+                
                 c.comenzar();
                 
             } else {
