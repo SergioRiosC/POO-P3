@@ -23,13 +23,14 @@ public class ServidorHilo extends Thread {
 
     DataOutputStream out;
     ArrayList<Usuario> jugadores;
-    ArrayList<Partida> partidas = new ArrayList<Partida>();
+    Partida partidas;
     Usuario usuarioActual;
 
-    public ServidorHilo(DataInputStream in, DataOutputStream out, Usuario u) {
+    public ServidorHilo(DataInputStream in, DataOutputStream out, Usuario u, ArrayList<Usuario> jugadores ) {
         this.in = in;
         this.out = out;
         this.usuarioActual = u;
+        this.jugadores = jugadores;
 
     }
 
@@ -47,7 +48,11 @@ public class ServidorHilo extends Thread {
                 switch (mensajeCliente[1]) {
                     case "jugadores":
                         ObjectInputStream in2 = new ObjectInputStream(in);
-                        jugadores = (ArrayList<Usuario>) in2.readObject();
+                        Usuario u =(Usuario) in2.readObject();
+                        System.out.println("RECIBIDO: "+u.getUsername());
+                        System.out.println("SIZE ANTES: "+jugadores.size());
+                        jugadores.add(u);
+                        System.out.println("SIZE DESPUES: "+jugadores.size());
                         for (int i = 0; i < jugadores.size(); i++) {
                             System.out.println("JUGADOR FOR: " + jugadores.get(i).getUsername());
                         }
@@ -56,33 +61,16 @@ public class ServidorHilo extends Thread {
                     case "partida":
                         ObjectInputStream in3 = new ObjectInputStream(in);
                         Partida nP = (Partida) in3.readObject();
-                        System.out.println("PARTIDAS SIZE ANTES: " + partidas.size());
-                        this.partidas.add(nP);
-                        System.out.println("PARTIDAS SIZE DESPUES: " + partidas.size());
+                        
 
                         break;
 
                     case "getPartida":
-                        System.out.println("PARTIDAS SIZE1: " + this.partidas.size());
                         String[] info = in.readUTF().split("-");
-                        System.out.println("READ: " + info[1] + " " + info[2]);
-                        System.out.println("PARTIDAS SIZE2: " + this.partidas.size());
+                        
                         String host = info[1];
                         String pass = info[2];
-                        System.out.println("PARTIDAS SIZE3: " + this.partidas.size());
-                        for (int i = 0; i < this.partidas.size(); i++) {
-                            System.out.println("PARTIDA:  " + this.partidas.get(i).host + "  " + "  " + this.partidas.get(i).clave);
-
-                            if (this.partidas.get(i).clave.equals(pass) && this.partidas.get(i).host.equals(host)) {
-                                ObjectOutputStream out2 = new ObjectOutputStream(out);
-                                out2.writeObject(partidas.get(i));
-                                System.out.println("OOOOUTTTT");
-                                for (Usuario user : partidas.get(i).jugadores) {
-                                    System.out.println("JUGADOR EN PARTIDA: " + user.getUsername());
-                                }
-                                break;
-                            }
-                        }
+                        
 
                         /*
                         for (Partida partida : partidas) {

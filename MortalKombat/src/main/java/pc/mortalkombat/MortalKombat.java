@@ -744,11 +744,9 @@ public class MortalKombat extends javax.swing.JFrame {
         c = new Cliente("127.0.0.1", claveCreacion, jugadorActual.getUsername());
         c.hilo.start();
         
-        c.hilo.enviarAServidor(jugadorActual.getUsername(), "partida");
-        c.hilo.enviarPartida(p);
         
         c.hilo.enviarAServidor(jugadorActual.getUsername(), "jugadores");
-        c.hilo.enviarJugadores(p.jugadores);
+        c.hilo.enviarJugadores(jugadorActual);
     }//GEN-LAST:event_crear_crearActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -779,11 +777,11 @@ public class MortalKombat extends javax.swing.JFrame {
         c = new Cliente(ip.getText(), clave.getText(), jugadorActual.getUsername());
         c.hilo.start();
         
-        p=c.hilo.getPartida(ip.getText(), clave.getText(), jugadorActual.getUsername());
-        p.jugadores.add(jugadorActual);
+        //p=c.hilo.getPartida(ip.getText(), clave.getText(), jugadorActual.getUsername());
+        //p.jugadores.add(jugadorActual);
         
         c.hilo.enviarAServidor(jugadorActual.getUsername(), "jugadores");
-        c.hilo.enviarJugadores(p.jugadores);
+        c.hilo.enviarJugadores(jugadorActual);
         System.out.println("UNIDO");
 
     }//GEN-LAST:event_unirse_unirseActionPerformed

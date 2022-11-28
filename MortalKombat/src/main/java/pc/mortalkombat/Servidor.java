@@ -18,8 +18,9 @@ import java.util.logging.Logger;
  * @author Sergio RC
  */
 public class Servidor {
-    static ArrayList<Usuario> jugadores;
+    
     public static void main(String[] args) {
+        ArrayList<Usuario> jugadores=new ArrayList<Usuario>()  ;
         ManejadorArchivos MA = new ManejadorArchivos();
         ServerSocket servidor = null;
         Socket sc = null;
@@ -55,8 +56,7 @@ public class Servidor {
                     u = MA.buscarusuario(username);
                     MA.guardarUsuario(u);
                     p.jugadores.add(u);
-                }*/
-                /*
+                }
                 //Gerrero #1
                 out.writeUTF("Elije el nombre de tu guerrero #1");
                 String nombre=in.readUTF();
@@ -85,12 +85,12 @@ public class Servidor {
                 String tipo4=in.readUTF();
                 u.generarGuerreros(nombre4, 3,tipo4);
                 
-                */
+               
                 
                 
                 
 
-                /*for (Usuario jugador : p.jugadores) {
+                for (Usuario jugador : p.jugadores) {
                     if (jugador.getUsername() == username) {
                         jugador.generarGuerreros();
                         break;
@@ -99,7 +99,7 @@ public class Servidor {
                 String username = in.readUTF();
                 out.writeUTF("Bienvenido a la partida " + username);
 
-                ServidorHilo hilo = new ServidorHilo(in, out,u);
+                ServidorHilo hilo = new ServidorHilo(in, out,u, jugadores);
 
                 hilo.start();
                 System.out.println("CONEXION CLIENTE");

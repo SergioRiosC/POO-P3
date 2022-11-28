@@ -64,11 +64,11 @@ public class ClienteHilo extends Thread{
     }
     
     
-    public void enviarJugadores(ArrayList<Usuario> jugadores){
+    public void enviarJugadores(Usuario jugador){
         try {
             System.out.println("ENVIANDO JUG");
             ObjectOutputStream out2=new ObjectOutputStream(out);
-            out2.writeObject(jugadores);
+            out2.writeObject(jugador);
             //out2.close();
         } catch (IOException ex) {
             Logger.getLogger(ClienteHilo.class.getName()).log(Level.SEVERE, null, ex);
