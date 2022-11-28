@@ -21,6 +21,7 @@ public class MortalKombat extends javax.swing.JFrame {
     Usuario jugadorActual;
     Imagenes imagenes = new Imagenes();
     String claveCreacion = "";
+    String ultimoComando = "";
     int contadorPartida;
     ArrayList<Usuario> jugadores = new ArrayList<>();
     
@@ -149,7 +150,7 @@ public class MortalKombat extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        terminal = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -500,16 +501,16 @@ public class MortalKombat extends javax.swing.JFrame {
 
         jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 404, -1, 168));
 
-        jTextArea2.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea2.setColumns(20);
-        jTextArea2.setForeground(new java.awt.Color(153, 153, 0));
-        jTextArea2.setRows(5);
-        jTextArea2.addKeyListener(new java.awt.event.KeyAdapter() {
+        terminal.setBackground(new java.awt.Color(0, 0, 0));
+        terminal.setColumns(20);
+        terminal.setForeground(new java.awt.Color(153, 153, 0));
+        terminal.setRows(5);
+        terminal.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextArea2KeyPressed(evt);
+                terminalKeyPressed(evt);
             }
         });
-        jScrollPane3.setViewportView(jTextArea2);
+        jScrollPane3.setViewportView(terminal);
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 578, 1265, 155));
 
@@ -726,6 +727,7 @@ public class MortalKombat extends javax.swing.JFrame {
 
     private void crear_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_crearActionPerformed
         // TODO add your handling code here:
+        System.out.println("me cago en la pua");
         pantallas.setSelectedIndex(4);
         claveCreacion = clave_crear.getText();
         contadorPartida = 0;
@@ -748,12 +750,18 @@ public class MortalKombat extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     //aca es donde se lee la consola
-    private void jTextArea2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea2KeyPressed
+    private void terminalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_terminalKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            System.out.println("ENTER");
+            String[] todo = terminal.getText().split("\n");
+            String tmp = todo[todo.length-1];
+            if(!tmp.equals(ultimoComando)){
+                ultimoComando = tmp;
+                System.out.println(ultimoComando);
+            }
+            
         }
-    }//GEN-LAST:event_jTextArea2KeyPressed
+    }//GEN-LAST:event_terminalKeyPressed
 
     private void unirse_unirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirse_unirseActionPerformed
         // TODO add your handling code here:
@@ -839,7 +847,6 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
@@ -855,6 +862,7 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JToggleButton registrarse;
     private javax.swing.JToggleButton registrarse1;
     private javax.swing.JButton registrarse_but;
+    private javax.swing.JTextArea terminal;
     private javax.swing.JToggleButton unirse;
     private javax.swing.JButton unirse_partida2;
     private javax.swing.JToggleButton unirse_unirse;

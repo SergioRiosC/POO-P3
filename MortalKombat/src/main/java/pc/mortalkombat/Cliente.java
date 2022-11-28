@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class Cliente {
 
     String HOST;
-    int PUERTO=5000;
+    int PUERTO=8080;
     String clavePartida;
     DataInputStream in;
     DataOutputStream out;

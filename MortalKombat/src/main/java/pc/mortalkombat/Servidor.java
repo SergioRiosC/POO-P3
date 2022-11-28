@@ -22,7 +22,7 @@ public class Servidor {
         ManejadorArchivos MA = new ManejadorArchivos();
         ServerSocket servidor = null;
         Socket sc = null;
-        final int PUERTO = 5000;
+        final int PUERTO = 8080;
         DataInputStream in;
         DataOutputStream out;
         Partida p = new Partida();
