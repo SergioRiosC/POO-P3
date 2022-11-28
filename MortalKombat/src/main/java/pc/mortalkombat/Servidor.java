@@ -34,11 +34,11 @@ public class Servidor {
             while (true) {
 
                 sc = servidor.accept();
-                //System.out.println("Bievenido a la partida + FULANITO");
+                System.out.println("Bievenido a la partida + FULANITO");
 
                 in = new DataInputStream(sc.getInputStream());
                 out = new DataOutputStream(sc.getOutputStream());
-
+                /*
                 String username = in.readUTF();
                 String password = in.readUTF();
                 if (!revisa_usuario(username)) {
@@ -53,7 +53,8 @@ public class Servidor {
                     u = MA.buscarusuario(username);
                     MA.guardarUsuario(u);
                     p.jugadores.add(u);
-                }
+                }*/
+                /*
                 //Gerrero #1
                 out.writeUTF("Elije el nombre de tu guerrero #1");
                 String nombre=in.readUTF();
@@ -82,7 +83,7 @@ public class Servidor {
                 String tipo4=in.readUTF();
                 u.generarGuerreros(nombre4, 3,tipo4);
                 
-                
+                */
                 
                 
                 
@@ -93,7 +94,7 @@ public class Servidor {
                         break;
                     }
                 }*/
-
+                String username = in.readUTF();
                 out.writeUTF("Bienvenido a la partida " + username);
 
                 ServidorHilo hilo = new ServidorHilo(in, out, p.jugadores,u);

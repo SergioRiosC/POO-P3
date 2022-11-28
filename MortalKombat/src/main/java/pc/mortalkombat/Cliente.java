@@ -18,15 +18,76 @@ import java.util.Scanner;
  */
 public class Cliente {
 
-    final String HOST = "127.0.0.1";
-    final int PUERTO = 5000;
+    String HOST;
+    int PUERTO=5000;
+    String clavePartida;
     DataInputStream in;
     DataOutputStream out;
+    Scanner scanner = new Scanner(System.in);
 
+    public Cliente(String HOST, String clave, String username) {
+        this.HOST = HOST;
+        this.clavePartida=clave;
+        scanner.useDelimiter("\n");
+        
+        try {
+            Socket sc = new Socket(HOST, 5000);
+            DataInputStream in = new DataInputStream(sc.getInputStream());
+            DataOutputStream out = new DataOutputStream(sc.getOutputStream());
+            /*System.out.println("Ingresa tu USER: ");
+            String username = scanner.next();
+            
+            System.out.println("Ingresa tu PASSWORD: ");
+            String password = scanner.next();*/
+            
+            /*
+            out.writeUTF(username);
+            out.writeUTF(password);
+            //Gerrero #1
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            
+            //Gerrero #2
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            
+            //Gerrero #3
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            
+            //Gerrero #4
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            System.out.println(in.readUTF());
+            out.writeUTF(scanner.next());
+            */
+            out.writeUTF(username);
+            System.out.println(in.readUTF());
+            ClienteHilo hilo = new ClienteHilo(in, out);
+            hilo.start();
+            hilo.join();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }
+
+/*
     public static void main(String[] args) {
 
         
-        Scanner scanner = new Scanner(System.in);
+        
         scanner.useDelimiter("\n");
 
         try {
@@ -76,7 +137,7 @@ public class Cliente {
         } catch (InterruptedException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
 
     
 

@@ -7,6 +7,9 @@ package pc.mortalkombat;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -417,6 +420,11 @@ public class MortalKombat extends javax.swing.JFrame {
         unirse_unirse.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         unirse_unirse.setForeground(new java.awt.Color(255, 255, 255));
         unirse_unirse.setText("Unirse");
+        unirse_unirse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unirse_unirseActionPerformed(evt);
+            }
+        });
         jPanel4.add(unirse_unirse, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 140, 30));
 
         crear_crear.setBackground(new java.awt.Color(102, 102, 102));
@@ -595,6 +603,24 @@ public class MortalKombat extends javax.swing.JFrame {
 
     private void configuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionActionPerformed
         // TODO add your handling code here:
+        
+        /*
+        jugadorActual.generarGuerreros(nombre_guerrero1.getText(), 0, tipo_guerrero1.getText());
+        
+        jugadorActual.generarGuerreros(nombre_guerrero2.getText(), 1, tipo_guerrero2.getText());
+        
+        jugadorActual.generarGuerreros(nombre_guerrero3.getText(), 2, tipo_guerrero3.getText());
+        
+        jugadorActual.generarGuerreros(nombre_guerrero4.getText(), 3, tipo_guerrero4.getText());
+        */
+        System.out.println("CONF");
+        jugadorActual.generarGuerreros("GUERRERRO 1", 0, "HIELO");
+        jugadorActual.generarGuerreros("GUERRERRO 2", 1, "FUEGO");
+        jugadorActual.generarGuerreros("GUERRERRO 3", 2, "AGUA");
+        jugadorActual.generarGuerreros("GUERRERRO 4", 3, "AIRE");
+        
+        
+        
     }//GEN-LAST:event_configuracionActionPerformed
 
     private void configuracionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_configuracionFocusGained
@@ -700,12 +726,20 @@ public class MortalKombat extends javax.swing.JFrame {
 
     private void crear_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_crearActionPerformed
         // TODO add your handling code here:
+        pantallas.setSelectedIndex(4);
         claveCreacion = clave_crear.getText();
         contadorPartida = 0;
         agregarJugador(jugadorActual.getUsername());
-        pantallas.setSelectedIndex(4);
+        
         clave_espera.setText("Clave: " + claveCreacion);
         clave_espera.setVerticalAlignment(0);
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MortalKombat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Cliente c=new Cliente("127.0.0.1", claveCreacion,jugadorActual.getUsername());
+        System.out.println("YA PASó");
     }//GEN-LAST:event_crear_crearActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -720,6 +754,15 @@ public class MortalKombat extends javax.swing.JFrame {
             System.out.println("ENTER");
         }
     }//GEN-LAST:event_jTextArea2KeyPressed
+
+    private void unirse_unirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirse_unirseActionPerformed
+        // TODO add your handling code here:
+        Cliente c=new Cliente(ip.getText(), clave.getText(),jugadorActual.getUsername());
+        System.out.println("YA PASó");
+        
+        
+    }//GEN-LAST:event_unirse_unirseActionPerformed
+
 
     /**
      * @param args the command line arguments

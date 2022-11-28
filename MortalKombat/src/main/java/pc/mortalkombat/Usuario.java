@@ -43,6 +43,7 @@ public class Usuario implements Serializable{
             guerreros[i]=new Guerrero();
         }*/
        guerreros[i]=new Guerrero(name,tipo);
+       System.out.println("GUERRERO "+i+" GENERADO");
    }
 
     public Guerrero[] getGuerreros() {
