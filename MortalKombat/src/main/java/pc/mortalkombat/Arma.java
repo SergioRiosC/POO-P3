@@ -4,11 +4,13 @@
  */
 package pc.mortalkombat;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Sergio RC
  */
-public class Arma {
+public class Arma implements Serializable{
     String[] tipo=new String[10];
     int[] ataque=new int[10];
     

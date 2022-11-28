@@ -24,6 +24,7 @@ public class Cliente {
     DataInputStream in;
     DataOutputStream out;
     Scanner scanner = new Scanner(System.in);
+    ClienteHilo hilo;
 
     public Cliente(String HOST, String clave, String username) {
         this.HOST = HOST;
@@ -31,7 +32,7 @@ public class Cliente {
         scanner.useDelimiter("\n");
         
         try {
-            Socket sc = new Socket(HOST, 5000);
+            Socket sc = new Socket(HOST, 8080);
             DataInputStream in = new DataInputStream(sc.getInputStream());
             DataOutputStream out = new DataOutputStream(sc.getOutputStream());
             /*System.out.println("Ingresa tu USER: ");
@@ -69,13 +70,11 @@ public class Cliente {
             */
             out.writeUTF(username);
             System.out.println(in.readUTF());
-            ClienteHilo hilo = new ClienteHilo(in, out);
-            hilo.start();
-            hilo.join();
+            hilo = new ClienteHilo(in, out);
+            //hilo.start();
+            //hilo.join();
 
         } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -141,7 +140,5 @@ public class Cliente {
 
     
 
-    public void enviarAServidor(String s) throws IOException {
-        out.writeUTF(s);
-    }
+    
 }

@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  * @author Sergio RC
  */
 public class Servidor {
-
+    static ArrayList<Usuario> jugadores;
     public static void main(String[] args) {
         ManejadorArchivos MA = new ManejadorArchivos();
         ServerSocket servidor = null;
@@ -25,7 +26,8 @@ public class Servidor {
         final int PUERTO = 8080;
         DataInputStream in;
         DataOutputStream out;
-        Partida p = new Partida();
+        
+        
         Usuario u=null;
 
         try {
@@ -35,7 +37,7 @@ public class Servidor {
 
                 sc = servidor.accept();
                 System.out.println("Bievenido a la partida + FULANITO");
-
+                
                 in = new DataInputStream(sc.getInputStream());
                 out = new DataOutputStream(sc.getOutputStream());
                 /*
@@ -97,7 +99,7 @@ public class Servidor {
                 String username = in.readUTF();
                 out.writeUTF("Bienvenido a la partida " + username);
 
-                ServidorHilo hilo = new ServidorHilo(in, out, p.jugadores,u);
+                ServidorHilo hilo = new ServidorHilo(in, out,u);
 
                 hilo.start();
                 System.out.println("CONEXION CLIENTE");

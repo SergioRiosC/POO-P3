@@ -4,11 +4,13 @@
  */
 package pc.mortalkombat;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Sergio RC
  */
-public class Guerrero {
+public class Guerrero implements Serializable{
     String tipo;
     Arma[] armas=new Arma[5];
     String[] nombres=new String[5];

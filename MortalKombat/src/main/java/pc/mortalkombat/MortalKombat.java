@@ -6,6 +6,7 @@ package pc.mortalkombat;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
  * @author sebastianqr.2208
  */
 public class MortalKombat extends javax.swing.JFrame {
+
     ManejadorArchivos manejador = new ManejadorArchivos();
     Usuario jugadorActual;
     Imagenes imagenes = new Imagenes();
@@ -24,22 +26,24 @@ public class MortalKombat extends javax.swing.JFrame {
     String ultimoComando = "";
     int contadorPartida;
     ArrayList<Usuario> jugadores = new ArrayList<>();
-    
-    private void esconderTodos(){
+    Cliente c;
+    Partida p;
+
+    private void esconderTodos() {
         ip.setVisible(false);
         clave.setVisible(false);
         ip_text.setVisible(false);
         clave_text.setVisible(false);
         unirse_unirse.setVisible(false);
-        
+
         clave_crear.setVisible(false);
         clave_crear_text.setVisible(false);
         crear_crear.setVisible(false);
-        
+
         atras.setVisible(false);
     }
-    
-    private void mostrarUnirse(){
+
+    private void mostrarUnirse() {
         ip.setVisible(true);
         clave.setVisible(true);
         ip_text.setVisible(true);
@@ -47,38 +51,38 @@ public class MortalKombat extends javax.swing.JFrame {
         unirse_unirse.setVisible(true);
         atras.setVisible(true);
     }
-    
-    private void esconderPrincipales(){
+
+    private void esconderPrincipales() {
         crear_partida.setVisible(false);
         unirse.setVisible(false);
     }
-    
-    private void mostrarCrear(){
+
+    private void mostrarCrear() {
         clave_crear.setVisible(true);
         clave_crear_text.setVisible(true);
         atras.setVisible(true);
         crear_crear.setVisible(true);
     }
-    
-    private void mostrarPrincipales(){
+
+    private void mostrarPrincipales() {
         crear_partida.setVisible(true);
         unirse.setVisible(true);
     }
-    
-    private void limpiarTodos(){
+
+    private void limpiarTodos() {
         ip.setText("");
         clave.setText("");
         clave_crear.setText("");
     }
-    
-    private void logout(){
+
+    private void logout() {
         jugadorActual = null;
         username_login.setText("");
         password_login.setText("");
         pantallas.setSelectedIndex(0);
     }
-    
-    private void agregarJugador(String name){
+
+    private void agregarJugador(String name) {
         contadorPartida++;
         jugadores_conectados.append(contadorPartida + ".\t" + name);
     }
@@ -604,7 +608,7 @@ public class MortalKombat extends javax.swing.JFrame {
 
     private void configuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionActionPerformed
         // TODO add your handling code here:
-        
+
         /*
         jugadorActual.generarGuerreros(nombre_guerrero1.getText(), 0, tipo_guerrero1.getText());
         
@@ -613,15 +617,13 @@ public class MortalKombat extends javax.swing.JFrame {
         jugadorActual.generarGuerreros(nombre_guerrero3.getText(), 2, tipo_guerrero3.getText());
         
         jugadorActual.generarGuerreros(nombre_guerrero4.getText(), 3, tipo_guerrero4.getText());
-        */
+         */
         System.out.println("CONF");
         jugadorActual.generarGuerreros("GUERRERRO 1", 0, "HIELO");
         jugadorActual.generarGuerreros("GUERRERRO 2", 1, "FUEGO");
         jugadorActual.generarGuerreros("GUERRERRO 3", 2, "AGUA");
         jugadorActual.generarGuerreros("GUERRERRO 4", 3, "AIRE");
-        
-        
-        
+
     }//GEN-LAST:event_configuracionActionPerformed
 
     private void configuracionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_configuracionFocusGained
@@ -651,20 +653,18 @@ public class MortalKombat extends javax.swing.JFrame {
 
         int existe = manejador.crear_carpeta("archivos/" + user);
 
-        if(existe == 0){
+        if (existe == 0) {
             boolean creador = manejador.guardarUsuario(usr);
-            if(creador){
-                JOptionPane.showMessageDialog(pantallas, "Usuario " + user + " creado correctamente!!!","CONFIRMACION", JOptionPane.INFORMATION_MESSAGE);
+            if (creador) {
+                JOptionPane.showMessageDialog(pantallas, "Usuario " + user + " creado correctamente!!!", "CONFIRMACION", JOptionPane.INFORMATION_MESSAGE);
                 username_login.setText(user);
                 password_login.setText(password);
                 pantallas.setSelectedIndex(0);
+            } else {
+                JOptionPane.showMessageDialog(pantallas, "Error al crear el usuario!!", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
-            else{
-                JOptionPane.showMessageDialog(pantallas, "Error al crear el usuario!!","ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(pantallas, "El usuario ---" + user+"--- ya existe!!!","ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(pantallas, "El usuario ---" + user + "--- ya existe!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_registrarse_butActionPerformed
 
@@ -680,19 +680,17 @@ public class MortalKombat extends javax.swing.JFrame {
 
         String lectura = manejador.leer("archivos/" + user + "/password.txt");
 
-        if(!lectura.equals("-1")){
+        if (!lectura.equals("-1")) {
 
-            if(lectura.equals(password)){
+            if (lectura.equals(password)) {
                 pantallas.setSelectedIndex(2);
                 jugadorActual = manejador.buscarusuario(user);
-            }
-            else{
-                JOptionPane.showMessageDialog(pantallas, "Contraseña incorrecta!!!","ERROR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(pantallas, "Contraseña incorrecta!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
 
-        }
-        else{
-            JOptionPane.showMessageDialog(pantallas, "El usuario no existe!!!","ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(pantallas, "El usuario no existe!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_login_butActionPerformed
 
@@ -727,12 +725,15 @@ public class MortalKombat extends javax.swing.JFrame {
 
     private void crear_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_crearActionPerformed
         // TODO add your handling code here:
-        System.out.println("me cago en la pua");
         pantallas.setSelectedIndex(4);
         claveCreacion = clave_crear.getText();
         contadorPartida = 0;
         agregarJugador(jugadorActual.getUsername());
+        p=new Partida(claveCreacion,"127.0.0.1");
+        p.jugadores.add(jugadorActual);
+        jugadores.add(jugadorActual);
         
+
         clave_espera.setText("Clave: " + claveCreacion);
         clave_espera.setVerticalAlignment(0);
         try {
@@ -740,8 +741,14 @@ public class MortalKombat extends javax.swing.JFrame {
         } catch (InterruptedException ex) {
             Logger.getLogger(MortalKombat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Cliente c=new Cliente("127.0.0.1", claveCreacion,jugadorActual.getUsername());
-        System.out.println("YA PASó");
+        c = new Cliente("127.0.0.1", claveCreacion, jugadorActual.getUsername());
+        c.hilo.start();
+        
+        c.hilo.enviarAServidor(jugadorActual.getUsername(), "partida");
+        c.hilo.enviarPartida(p);
+        
+        c.hilo.enviarAServidor(jugadorActual.getUsername(), "jugadores");
+        c.hilo.enviarJugadores(p.jugadores);
     }//GEN-LAST:event_crear_crearActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -752,25 +759,34 @@ public class MortalKombat extends javax.swing.JFrame {
     //aca es donde se lee la consola
     private void terminalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_terminalKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String[] todo = terminal.getText().split("\n");
-            String tmp = todo[todo.length-1];
-            if(!tmp.equals(ultimoComando)){
+            String tmp = todo[todo.length - 1];
+            if (!tmp.equals(ultimoComando)) {
                 ultimoComando = tmp;
                 System.out.println(ultimoComando);
+
+                c.hilo.enviarAServidor(jugadorActual.getUsername(), ultimoComando);
+
             }
-            
+
         }
     }//GEN-LAST:event_terminalKeyPressed
 
     private void unirse_unirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirse_unirseActionPerformed
         // TODO add your handling code here:
-        Cliente c=new Cliente(ip.getText(), clave.getText(),jugadorActual.getUsername());
-        System.out.println("YA PASó");
+        jugadores.add(jugadorActual);
+        c = new Cliente(ip.getText(), clave.getText(), jugadorActual.getUsername());
+        c.hilo.start();
         
+        p=c.hilo.getPartida(ip.getText(), clave.getText(), jugadorActual.getUsername());
+        p.jugadores.add(jugadorActual);
         
-    }//GEN-LAST:event_unirse_unirseActionPerformed
+        c.hilo.enviarAServidor(jugadorActual.getUsername(), "jugadores");
+        c.hilo.enviarJugadores(p.jugadores);
+        System.out.println("UNIDO");
 
+    }//GEN-LAST:event_unirse_unirseActionPerformed
 
     /**
      * @param args the command line arguments
