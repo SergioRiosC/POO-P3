@@ -86,7 +86,7 @@ public class ClienteHilo extends Thread{
         }
     }
     
-    public Partida getPartida(String host,String pass, String user){
+    public Partida getPartida(String host,String pass, String user){ //host = ip; pass = password; user = usuario a conectar
         enviarAServidor(user, "getPartida");
         enviarAServidor(user, host+"-"+pass);
         Partida p=null;

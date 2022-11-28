@@ -147,7 +147,7 @@ public class MortalKombat extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jugadores_conectados = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        comenzar_partida = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         clave_espera = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -474,8 +474,13 @@ public class MortalKombat extends javax.swing.JFrame {
         jLabel6.setText("Jugadores Conectados");
         jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 80, -1, 30));
 
-        jButton3.setText("Comenzar Partida");
-        jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 170, 330, 50));
+        comenzar_partida.setText("Comenzar Partida");
+        comenzar_partida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comenzar_partidaActionPerformed(evt);
+            }
+        });
+        jPanel5.add(comenzar_partida, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 170, 330, 50));
 
         jButton4.setText("Menu Principal");
         jButton4.setToolTipText("");
@@ -685,6 +690,9 @@ public class MortalKombat extends javax.swing.JFrame {
             if (lectura.equals(password)) {
                 pantallas.setSelectedIndex(2);
                 jugadorActual = manejador.buscarusuario(user);
+                c = new Cliente("sebas", 8081);
+                c.comenzar();
+                
             } else {
                 JOptionPane.showMessageDialog(pantallas, "Contraseña incorrecta!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -741,12 +749,13 @@ public class MortalKombat extends javax.swing.JFrame {
         } catch (InterruptedException ex) {
             Logger.getLogger(MortalKombat.class.getName()).log(Level.SEVERE, null, ex);
         }
-        c = new Cliente("127.0.0.1", claveCreacion, jugadorActual.getUsername());
-        c.hilo.start();
-        
-        
-        c.hilo.enviarAServidor(jugadorActual.getUsername(), "jugadores");
-        c.hilo.enviarJugadores(jugadorActual);
+        comenzar_partida.setVisible(true);
+        try{
+            c.enviarMensaje("nepe de pepe");
+        }
+        catch(IOException e){
+            
+        }
     }//GEN-LAST:event_crear_crearActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -763,9 +772,6 @@ public class MortalKombat extends javax.swing.JFrame {
             if (!tmp.equals(ultimoComando)) {
                 ultimoComando = tmp;
                 System.out.println(ultimoComando);
-
-                c.hilo.enviarAServidor(jugadorActual.getUsername(), ultimoComando);
-
             }
 
         }
@@ -774,17 +780,20 @@ public class MortalKombat extends javax.swing.JFrame {
     private void unirse_unirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirse_unirseActionPerformed
         // TODO add your handling code here:
         jugadores.add(jugadorActual);
-        c = new Cliente(ip.getText(), clave.getText(), jugadorActual.getUsername());
-        c.hilo.start();
-        
+        agregarJugador(jugadorActual.getUsername());
         //p=c.hilo.getPartida(ip.getText(), clave.getText(), jugadorActual.getUsername());
         //p.jugadores.add(jugadorActual);
-        
-        c.hilo.enviarAServidor(jugadorActual.getUsername(), "jugadores");
-        c.hilo.enviarJugadores(jugadorActual);
         System.out.println("UNIDO");
+        
+        comenzar_partida.setVisible(false);
+        clave_espera.setText("Esperando al Anfitrion...");
+        pantallas.setSelectedIndex(4);
 
     }//GEN-LAST:event_unirse_unirseActionPerformed
+
+    private void comenzar_partidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comenzar_partidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comenzar_partidaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -829,6 +838,7 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JLabel clave_crear_text;
     private javax.swing.JLabel clave_espera;
     private javax.swing.JLabel clave_text;
+    private javax.swing.JButton comenzar_partida;
     private javax.swing.JButton configuracion;
     private javax.swing.JLabel configuracion_label;
     private javax.swing.JToggleButton crear_crear;
@@ -837,7 +847,6 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JLabel ip_text;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;

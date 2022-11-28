@@ -8,7 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +33,10 @@ public class ServidorHilo extends Thread {
         this.jugadores = jugadores;
 
     }
+    
+    private void enviarMensaje(String msj, int port) throws IOException{
+        Socket enviaFallo = new Socket("127.0.0.1", port);
+    }
 
     @Override
     public void run() {
@@ -56,6 +60,7 @@ public class ServidorHilo extends Thread {
                         for (int i = 0; i < jugadores.size(); i++) {
                             System.out.println("JUGADOR FOR: " + jugadores.get(i).getUsername());
                         }
+                        out.writeBytes(respuesta);
                         break;
 
                     case "partida":

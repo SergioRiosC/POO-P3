@@ -4,9 +4,8 @@
  */
 package pc.mortalkombat;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,129 +15,58 @@ import java.util.Scanner;
  *
  * @author Sergio RC
  */
-public class Cliente {
+public class Cliente implements Runnable{
+    private Socket socket;
+    private ObjetoEnvio mensaje;
+    private String username;
+    private int port;
+    private int puertoServidor = 10201;
 
-    String HOST;
-    int PUERTO=8080;
-    String clavePartida;
-    DataInputStream in;
-    DataOutputStream out;
-    Scanner scanner = new Scanner(System.in);
-    ClienteHilo hilo;
+    public Cliente(String username, int port) {
+        this.username = username;
+        this.port = port;
+    }
 
-    public Cliente(String HOST, String clave, String username) {
-        this.HOST = HOST;
-        this.clavePartida=clave;
-        scanner.useDelimiter("\n");
-        
-        try {
-            Socket sc = new Socket(HOST, 8080);
-            DataInputStream in = new DataInputStream(sc.getInputStream());
-            DataOutputStream out = new DataOutputStream(sc.getOutputStream());
-            /*System.out.println("Ingresa tu USER: ");
-            String username = scanner.next();
-            
-            System.out.println("Ingresa tu PASSWORD: ");
-            String password = scanner.next();*/
-            
-            /*
-            out.writeUTF(username);
-            out.writeUTF(password);
-            //Gerrero #1
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            
-            //Gerrero #2
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            
-            //Gerrero #3
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            
-            //Gerrero #4
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            */
-            out.writeUTF(username);
-            System.out.println(in.readUTF());
-            hilo = new ClienteHilo(in, out);
-            //hilo.start();
-            //hilo.join();
+    public void comenzar(){
+        Thread hilo = new Thread(this);
+        hilo.start();
+    }
 
-        } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+    public void enviarMensaje(String mensaje) throws IOException {
+        try{
+            Socket envio = new Socket("127.0.0.1", puertoServidor);
+            ObjetoEnvio objeto = new ObjetoEnvio();
+            objeto.setMensaje(mensaje);
+            objeto.setNombre(username);
+            objeto.setPuerto(String.valueOf(port));
+            ObjectOutputStream salida = new ObjectOutputStream(envio.getOutputStream());
+            salida.writeObject(objeto);
+            System.out.println("ENVIAAAADO  ");
+            salida.close();
+            envio.close();
         }
-        
+        catch(IOException e){
+            System.out.println("Error al enviar mensaje");
+        }
         
         
     }
 
-/*
-    public static void main(String[] args) {
-
-        
-        
-        scanner.useDelimiter("\n");
-
-        try {
-            Socket sc = new Socket("127.0.0.1", 5000);
-            DataInputStream in = new DataInputStream(sc.getInputStream());
-            DataOutputStream out = new DataOutputStream(sc.getOutputStream());
-            System.out.println("Ingresa tu USER: ");
-            String username = scanner.next();
-            
-            System.out.println("Ingresa tu PASSWORD: ");
-            String password = scanner.next();
-            
-            
-            out.writeUTF(username);
-            out.writeUTF(password);
-            //Gerrero #1
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            
-            //Gerrero #2
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            
-            //Gerrero #3
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            
-            //Gerrero #4
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            System.out.println(in.readUTF());
-            out.writeUTF(scanner.next());
-            
-            
-            ClienteHilo hilo = new ClienteHilo(in, out);
-            hilo.start();
-            hilo.join();
-
-        } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+    @Override
+    public void run() {
+        try{
+            ServerSocket llegadaDeMensaje = new ServerSocket(port);
+            ObjetoEnvio recibo;
+            while(true){
+                Socket socket = llegadaDeMensaje.accept();
+                ObjectInputStream entradaDatos = new ObjectInputStream(socket.getInputStream());
+                mensaje = (ObjetoEnvio) entradaDatos.readObject();
+                System.out.println(mensaje.getMensaje());
+                socket.close();
+            }
         }
-    }*/
-
-    
-
-    
+        catch(Exception e){
+            System.out.println("Error al iniciar el cliente");
+        }
+    }
 }
