@@ -5,6 +5,8 @@
 package pc.mortalkombat;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +19,7 @@ public class MortalKombat extends javax.swing.JFrame {
     Imagenes imagenes = new Imagenes();
     String claveCreacion = "";
     int contadorPartida;
+    ArrayList<Usuario> jugadores = new ArrayList<>();
     
     private void esconderTodos(){
         ip.setVisible(false);
@@ -139,6 +142,21 @@ public class MortalKombat extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         clave_espera = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea4 = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextArea5 = new javax.swing.JTextArea();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTextArea6 = new javax.swing.JTextArea();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTextArea7 = new javax.swing.JTextArea();
 
         unirse_partida2.setBackground(new java.awt.Color(204, 204, 204));
         unirse_partida2.setForeground(new java.awt.Color(255, 255, 255));
@@ -327,7 +345,6 @@ public class MortalKombat extends javax.swing.JFrame {
         jPanel3.add(jugar_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(955, 685, -1, -1));
 
         jButton2.setText("Logout");
-        jButton2.setActionCommand("Logout");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -345,7 +362,7 @@ public class MortalKombat extends javax.swing.JFrame {
         jLabel4.setText("PARTIDA - MENU");
         jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, -1, -1));
 
-        atras.setBackground(new java.awt.Color(204, 204, 204));
+        atras.setBackground(new java.awt.Color(102, 102, 102));
         atras.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         atras.setForeground(new java.awt.Color(255, 255, 255));
         atras.setText("Atras");
@@ -356,7 +373,7 @@ public class MortalKombat extends javax.swing.JFrame {
         });
         jPanel4.add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, 140, 30));
 
-        crear_partida.setBackground(new java.awt.Color(204, 204, 204));
+        crear_partida.setBackground(new java.awt.Color(102, 102, 102));
         crear_partida.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         crear_partida.setForeground(new java.awt.Color(255, 255, 255));
         crear_partida.setText("Crear Partida");
@@ -369,7 +386,7 @@ public class MortalKombat extends javax.swing.JFrame {
         jPanel4.add(clave_crear, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 320, 410, 50));
         jPanel4.add(ip, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 410, 50));
 
-        unirse.setBackground(new java.awt.Color(204, 204, 204));
+        unirse.setBackground(new java.awt.Color(102, 102, 102));
         unirse.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         unirse.setForeground(new java.awt.Color(255, 255, 255));
         unirse.setText("Unirse");
@@ -396,13 +413,13 @@ public class MortalKombat extends javax.swing.JFrame {
         clave_text.setText("clave");
         jPanel4.add(clave_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 260, -1, -1));
 
-        unirse_unirse.setBackground(new java.awt.Color(204, 204, 204));
+        unirse_unirse.setBackground(new java.awt.Color(102, 102, 102));
         unirse_unirse.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         unirse_unirse.setForeground(new java.awt.Color(255, 255, 255));
         unirse_unirse.setText("Unirse");
         jPanel4.add(unirse_unirse, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 140, 30));
 
-        crear_crear.setBackground(new java.awt.Color(204, 204, 204));
+        crear_crear.setBackground(new java.awt.Color(102, 102, 102));
         crear_crear.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         crear_crear.setForeground(new java.awt.Color(255, 255, 255));
         crear_crear.setText("Crear");
@@ -419,7 +436,7 @@ public class MortalKombat extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 710, -1, -1));
+        jPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 700, -1, -1));
 
         pantallas.addTab("tab4", jPanel4);
 
@@ -462,6 +479,83 @@ public class MortalKombat extends javax.swing.JFrame {
         jPanel5.add(clave_espera, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 70, -1, -1));
 
         pantallas.addTab("tab5", jPanel5);
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(153, 153, 0));
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
+
+        jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 404, -1, 168));
+
+        jTextArea2.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea2.setColumns(20);
+        jTextArea2.setForeground(new java.awt.Color(153, 153, 0));
+        jTextArea2.setRows(5);
+        jTextArea2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextArea2KeyPressed(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTextArea2);
+
+        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 578, 1265, 155));
+
+        jTextArea3.setEditable(false);
+        jTextArea3.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea3.setColumns(20);
+        jTextArea3.setForeground(new java.awt.Color(153, 153, 0));
+        jTextArea3.setLineWrap(true);
+        jTextArea3.setRows(5);
+        jScrollPane4.setViewportView(jTextArea3);
+
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, 216));
+
+        jTextArea4.setEditable(false);
+        jTextArea4.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea4.setColumns(20);
+        jTextArea4.setForeground(new java.awt.Color(153, 153, 0));
+        jTextArea4.setLineWrap(true);
+        jTextArea4.setRows(5);
+        jScrollPane5.setViewportView(jTextArea4);
+
+        jPanel6.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 228, -1, 170));
+
+        jTextArea5.setEditable(false);
+        jTextArea5.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea5.setColumns(20);
+        jTextArea5.setForeground(new java.awt.Color(153, 153, 0));
+        jTextArea5.setLineWrap(true);
+        jTextArea5.setRows(5);
+        jScrollPane6.setViewportView(jTextArea5);
+
+        jPanel6.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, 540, 560));
+
+        jTextArea6.setEditable(false);
+        jTextArea6.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea6.setColumns(20);
+        jTextArea6.setForeground(new java.awt.Color(153, 153, 0));
+        jTextArea6.setLineWrap(true);
+        jTextArea6.setRows(5);
+        jScrollPane7.setViewportView(jTextArea6);
+
+        jPanel6.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 460, 280));
+
+        jTextArea7.setEditable(false);
+        jTextArea7.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea7.setColumns(20);
+        jTextArea7.setForeground(new java.awt.Color(153, 153, 0));
+        jTextArea7.setLineWrap(true);
+        jTextArea7.setRows(5);
+        jScrollPane8.setViewportView(jTextArea7);
+
+        jPanel6.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 460, 270));
+
+        pantallas.addTab("tab6", jPanel6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -619,6 +713,14 @@ public class MortalKombat extends javax.swing.JFrame {
         pantallas.setSelectedIndex(2);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    //aca es donde se lee la consola
+    private void jTextArea2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea2KeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            System.out.println("ENTER");
+        }
+    }//GEN-LAST:event_jTextArea2KeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -684,7 +786,22 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextArea jTextArea5;
+    private javax.swing.JTextArea jTextArea6;
+    private javax.swing.JTextArea jTextArea7;
     private javax.swing.JTextArea jugadores_conectados;
     private javax.swing.JButton jugar;
     private javax.swing.JLabel jugar_label;
