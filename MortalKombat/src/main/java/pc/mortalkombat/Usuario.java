@@ -17,7 +17,12 @@ public class Usuario implements Serializable{
     private String username;
     private String nombre;
     private String password;
-    private ArrayList<Guerrero> guerreros = new ArrayList<>();
+    ArrayList<Guerrero> guerreros = new ArrayList<>();
+
+    public void setSeleccionado(Guerrero seleccionado) {
+        this.seleccionado = seleccionado;
+    }
+
     Guerrero seleccionado;
     private int victorias=0;
     private int derrotas=0;

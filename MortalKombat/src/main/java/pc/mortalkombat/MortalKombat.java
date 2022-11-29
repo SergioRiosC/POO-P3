@@ -1008,7 +1008,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
                 else{
                     System.out.println(ultimoComando);
                     String[] comando = ultimoComando.split("-");
-                    if(comando[0].equals("chatprivado") || comando[0].equals("chat")){
+                    if(comando[0].equals("chatprivado") || comando[0].equals("chat") || comando[0].equals("select")){
                         enviarMensaje(ultimoComando + "-" + jugadorActual.getUsername());
                     }
                 }

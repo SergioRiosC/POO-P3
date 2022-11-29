@@ -142,6 +142,22 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         return 0;
     }
 
+    private Guerrero getPersonaje(String usuario, String nombrePersonaje){
+        ArrayList<Guerrero> aux = null;
+        for(Usuario i: jugadoresFinales){
+            if(i.getUsername().equals(usuario)){
+                aux = i.guerreros;
+                break;
+            }
+        }
+        for(Guerrero j: aux){
+            if(j.nombre.equals(nombrePersonaje)){
+                return j;
+            }
+        }
+        return null;
+    }
+
     private void reconocerMensaje(ObjetoEnvio entrada) throws IOException {
         String mensaje = entrada.getMensaje();
         String[] partes = mensaje.split("-");
@@ -149,7 +165,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         Tipos de mensaje:
         -nuevo -nombre -port -password
         -atacar -nombreAtacado -guerrero -arma -jugadorQueEnvia
-        -select (se hace localmente)
+        -select -personaje -quienEnvia
         -rendirse -jugadorQueEnvia
         -chat -mensaje -jugadorQueEnvia
         -chatprivado -mensaje -jugadorQueRecibe -jugadorQueEnvia
@@ -185,6 +201,18 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
             case "atacar":
                 break;
             case "select":
+                String nombrePersonaje = partes[1];
+                String nombreJugador = partes[2];
+
+                for(Usuario i: jugadoresFinales){
+                    if(i.getUsername().equals(nombreJugador)){
+                        i.setSeleccionado(getPersonaje(nombreJugador, nombrePersonaje));
+                        break;
+                    }
+                }
+                envio.setMensaje("seleccionarJugador-$ Se ha seleccionado a " + nombrePersonaje + "!" );
+                enviarMensaje(envio, puertoDe(nombreJugador));
+
                 break;
             case "rendirse":
                 envio.setMensaje("rendirse-$ El jugador " + partes[1] + " se ha rendido! :/");
