@@ -139,6 +139,10 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
                 jugadores_partida.setText(jugadores_conectados.getText());
                 pantallas.setSelectedIndex(5);
                 break;
+
+            case "chatprivado":
+                terminal.append("\n-> " + partes[1]);
+                break;
         }
     }
     
@@ -859,6 +863,14 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
             if (!tmp.equals(ultimoComando)) {
                 ultimoComando = tmp;
                 System.out.println(ultimoComando);
+                String[] comando = ultimoComando.split("-");
+                if(comando[0].equals("chatprivado") || comando[0].equals("chat")){
+                    try{
+                        enviarMensaje(ultimoComando + "-" + jugadorActual.getUsername());
+                    }
+                    catch(IOException e){
+                    }
+                }
             }
 
         }

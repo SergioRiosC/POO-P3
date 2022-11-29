@@ -160,7 +160,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 break;
                 
             case "chat":
-                envio.setMensaje("-chatprivado -" + partes[1] + "..... Enviado por: " + partes[2]);
+                envio.setMensaje("chatprivado-" + partes[1] + "..... Enviado (publicamente) por: " + partes[2]);
                 for(ArrayList<String> i: usuarios){
                     if(!i.get(0).equals(partes[2])){
                         try {
@@ -177,7 +177,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 ArrayList<String> nuevo =  new ArrayList<>();
                 if(jugadorAEnviar != null){
                     try {
-                        envio.setMensaje("-chatprivado -" + partes[1] + "..... Enviado por: " + partes[3]);
+                        envio.setMensaje("chatprivado-" + partes[1] + "..... Enviado por: " + partes[3]);
                         enviarMensaje(envio, Integer.parseInt(jugadorAEnviar.get(1)));
                         nuevo.add(partes[1]);
                         nuevo.add(partes[2]);
