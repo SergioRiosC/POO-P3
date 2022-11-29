@@ -7,6 +7,10 @@ package pc.mortalkombat;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -17,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author sebastianqr.2208
  */
-public class MortalKombat extends javax.swing.JFrame {
+public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
     ManejadorArchivos manejador = new ManejadorArchivos();
     Usuario jugadorActual;
@@ -26,8 +30,14 @@ public class MortalKombat extends javax.swing.JFrame {
     String ultimoComando = "";
     int contadorPartida;
     ArrayList<Usuario> jugadores = new ArrayList<>();
-    Cliente c;
+    //Cliente c;
     Partida p;
+
+    private Socket socket;
+    private ObjetoEnvio mensaje;
+    private String username;
+    private int port;
+    private int puertoServidor = 10201;
 
     private void esconderTodos() {
         ip.setVisible(false);
@@ -84,7 +94,71 @@ public class MortalKombat extends javax.swing.JFrame {
 
     private void agregarJugador(String name) {
         contadorPartida++;
-        jugadores_conectados.append(contadorPartida + ".\t" + name);
+        jugadores_conectados.append(contadorPartida + ".\t" + name + "\n");
+    }
+    
+    public void comenzar(){
+        Thread hilo = new Thread(this);
+        hilo.start();
+    }
+    
+    public void enviarMensaje(String mensaje) throws IOException {
+        try{
+            Socket envio = new Socket("127.0.0.1", puertoServidor);
+            ObjetoEnvio objeto = new ObjetoEnvio();
+            objeto.setMensaje(mensaje);
+            objeto.setNombre(username);
+            objeto.setPuerto(String.valueOf(port));
+            objeto.setMiPuerto(String.valueOf(jugadorActual.port));
+            ObjectOutputStream salida = new ObjectOutputStream(envio.getOutputStream());
+            salida.writeObject(objeto);
+            System.out.println("ENVIAAAADO  ");
+            salida.close();
+            envio.close();
+        }
+        catch(IOException e){
+            System.out.println("Error al enviar mensaje");
+        }
+        
+        
+    }
+
+    private void reconocerMensaje(String mensaje){
+        System.out.println("INGRESAAAAANDO");
+        String[] partes = mensaje.split("-");
+
+        System.out.println("Partes: " + partes[0]);
+
+        switch(partes[0]){
+            case "conecta":
+                agregarJugador(partes[1]);
+                System.out.println("SE AGREGAAAAAA  A JUGAOR");
+                break;
+
+            case "comenzar":
+                jugadores_partida.setText(jugadores_conectados.getText());
+                pantallas.setSelectedIndex(5);
+                break;
+        }
+    }
+    
+    @Override
+    public void run() {
+        try{
+            ServerSocket llegadaDeMensaje = new ServerSocket(port);
+            ObjetoEnvio recibo;
+            while(true){
+                Socket socket = llegadaDeMensaje.accept();
+                ObjectInputStream entradaDatos = new ObjectInputStream(socket.getInputStream());
+                recibo = (ObjetoEnvio) entradaDatos.readObject();
+                System.out.println("RECIBIENDO MENSAJE: " + recibo.getMensaje());
+                reconocerMensaje(recibo.getMensaje());
+                socket.close();
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error al iniciar el cliente");
+        }
     }
 
     /**
@@ -95,6 +169,7 @@ public class MortalKombat extends javax.swing.JFrame {
         jugar.setIcon(imagenes.jugar);
         configuracion.setIcon(imagenes.configuracion);
         esconderTodos();
+        jugadores_conectados.setEnabled(true);
     }
 
     /**
@@ -156,7 +231,7 @@ public class MortalKombat extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         terminal = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
+        jugadores_partida = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -427,7 +502,11 @@ public class MortalKombat extends javax.swing.JFrame {
         unirse_unirse.setText("Unirse");
         unirse_unirse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                unirse_unirseActionPerformed(evt);
+                try {
+                    unirse_unirseActionPerformed(evt);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         jPanel4.add(unirse_unirse, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 140, 30));
@@ -523,13 +602,13 @@ public class MortalKombat extends javax.swing.JFrame {
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 578, 1265, 155));
 
-        jTextArea3.setEditable(false);
-        jTextArea3.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea3.setColumns(20);
-        jTextArea3.setForeground(new java.awt.Color(153, 153, 0));
-        jTextArea3.setLineWrap(true);
-        jTextArea3.setRows(5);
-        jScrollPane4.setViewportView(jTextArea3);
+        jugadores_partida.setEditable(false);
+        jugadores_partida.setBackground(new java.awt.Color(0, 0, 0));
+        jugadores_partida.setColumns(20);
+        jugadores_partida.setForeground(new java.awt.Color(153, 153, 0));
+        jugadores_partida.setLineWrap(true);
+        jugadores_partida.setRows(5);
+        jScrollPane4.setViewportView(jugadores_partida);
 
         jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, 216));
 
@@ -693,9 +772,13 @@ public class MortalKombat extends javax.swing.JFrame {
                 pantallas.setSelectedIndex(2);
                 jugadorActual = manejador.buscarusuario(user);
                 System.out.println("PUERTO A USAR: "+jugadorActual.port);
-                c = new Cliente("sebas", jugadorActual.port);
+                port = jugadorActual.port;
+                username = jugadorActual.getUsername();
+                comenzar();
                 
-                c.comenzar();
+                //c = new Cliente("sebas", jugadorActual.port);
+                
+                //c.comenzar();
                 
             } else {
                 JOptionPane.showMessageDialog(pantallas, "Contraseña incorrecta!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -755,7 +838,7 @@ public class MortalKombat extends javax.swing.JFrame {
         }
         comenzar_partida.setVisible(true);
         try{
-            c.enviarMensaje("nepe de pepe");
+            enviarMensaje("nuevo-" + jugadorActual.getUsername() + "-" + jugadorActual.port + "-" + claveCreacion);
         }
         catch(IOException e){
             
@@ -781,7 +864,7 @@ public class MortalKombat extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_terminalKeyPressed
 
-    private void unirse_unirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirse_unirseActionPerformed
+    private void unirse_unirseActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_unirse_unirseActionPerformed
         // TODO add your handling code here:
         jugadores.add(jugadorActual);
         agregarJugador(jugadorActual.getUsername());
@@ -792,11 +875,27 @@ public class MortalKombat extends javax.swing.JFrame {
         comenzar_partida.setVisible(false);
         clave_espera.setText("Esperando al Anfitrion...");
         pantallas.setSelectedIndex(4);
+        try {
+            //-conectar -nombre -port -password
+            enviarMensaje("conectar-" + jugadorActual.getUsername() + "-" + jugadorActual.port + "-" + clave.getText());
+        }
+        catch(IOException e){
 
+        }
     }//GEN-LAST:event_unirse_unirseActionPerformed
 
     private void comenzar_partidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comenzar_partidaActionPerformed
         // TODO add your handling code here:
+        int opcion = JOptionPane.showConfirmDialog(pantallas, "¿Estas seguro que quieres comenzar la partida?", "Comenzar Partida", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+            comenzar_partida.setVisible(false);
+            try {
+                enviarMensaje("comenzar-");
+            }
+            catch(IOException e){
+
+            }
+        }
     }//GEN-LAST:event_comenzar_partidaActionPerformed
 
     /**
@@ -874,12 +973,12 @@ public class MortalKombat extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
     private javax.swing.JTextArea jTextArea7;
     private javax.swing.JTextArea jugadores_conectados;
+    private javax.swing.JTextArea jugadores_partida;
     private javax.swing.JButton jugar;
     private javax.swing.JLabel jugar_label;
     private javax.swing.JButton login_but;

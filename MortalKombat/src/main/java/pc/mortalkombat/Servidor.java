@@ -4,10 +4,13 @@
  */
 package pc.mortalkombat;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
 
 /**
  *
@@ -16,6 +19,13 @@ import java.util.ArrayList;
 public class Servidor extends javax.swing.JFrame implements Runnable {
     ArrayList<ArrayList<String>> usuarios = new ArrayList<>(); //matriz de usuarios
     private int puerto = 10201;
+    private String password = "";
+    private int hostPort = 0;
+    private String host = "";
+
+    String mensajeTmp = "";
+    int puertoTmp = 0;
+    boolean temporal = false;
     /**
      * Creates new form Servidor
      */
@@ -51,12 +61,84 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void reconocerMensaje(String mensaje){
+    private void enviarMensaje(ObjetoEnvio mensaje, int ip) throws IOException {
+        try {
+            Socket envioDeMensaje = new Socket("127.0.0.1", ip);
+            ObjectOutputStream reenvio = new ObjectOutputStream(envioDeMensaje.getOutputStream());
+            reenvio.writeObject(mensaje);
+            System.out.println("---Enviado---");
+            reenvio.close();
+            envioDeMensaje.close();
+        } catch (IOException e) {
+            System.out.println("Error al enviar mensaje");
+        }
+    }
+
+    private ArrayList<String> buscarUsuario(String nombre){
+        for (ArrayList<String> usuario : usuarios) {
+            if(usuario.get(0).equals(nombre)){
+                return usuario;
+            }
+        }
+        return null;
+    }
+
+    private void enviarATodos(ObjetoEnvio mensaje, String enviador) throws IOException{
+        try{
+            for (ArrayList<String> usuario : usuarios) {
+                if(!usuario.get(0).equals(enviador)){
+                    enviarMensaje(mensaje, Integer.parseInt(usuario.get(1)));
+                }
+            }
+        }
+        catch(IOException e){
+            System.out.println("Error al enviar mensaje");
+        }
+    }
+
+    private void enviarConectados(String miIp){
+        for(ArrayList<String> i : usuarios){
+            if(!i.get(1).equals(miIp)){
+                try {
+                    ObjetoEnvio mensaje = new ObjetoEnvio();
+                    mensaje.setMensaje("conecta-" + i.get(0));
+                    enviarMensaje(mensaje, Integer.parseInt(miIp));
+
+                }
+                catch (IOException ex) {
+                    System.out.println("Error al enviar mensaje");
+                }
+            }
+        }
+    }
+
+    private void reconocerMensaje(ObjetoEnvio entrada) throws IOException {
+        String mensaje = entrada.getMensaje();
         String[] partes = mensaje.split("-");
         /*
         Tipos de mensaje:
-        -nuevo -nombre -host(valor booleano) -port -password
+        -nuevo -nombre -port -password
+        -atacar -nombreAtacado -guerrero -arma -jugadorQueEnvia
+        -select (se hace localmente)
+        -rendirse -jugadorQueEnvia
+        -chat -mensaje -jugadorQueEnvia
+        -chatprivado -mensaje -jugadorQueRecibe -jugadorQueEnvia
+        -pasarTurno -jugadorQueEnvia
+        -comodin -jugadorQueEnvia
+        -conectar -nombre -port -password
          */
+
+        ObjetoEnvio envio = new ObjetoEnvio();
+
+        for(String i: partes){
+            System.out.println(i);
+        }
+
+        if(partes[0].equals("nuevo")){
+            System.out.println("nuevo si");
+        }
+
+        System.out.println("partes[0] = " + partes[0]);
 
         switch(partes[0]){
             case "nuevo":
@@ -64,22 +146,71 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 usuario.add(partes[1]);
                 usuario.add(partes[2]);
                 usuarios.add(usuario);
+                host = partes[1];
+                password = partes[3];
+                hostPort = Integer.parseInt(partes[2]);
+                System.out.println("Nuevo host port: " + hostPort);
+                System.out.println("Nuevo password: " + password);
                 break;
-            case "login":
+            case "atacar":
                 break;
-            case "ataque":
+            case "select":
                 break;
-            case "rendicion":
+            case "rendirse":
                 break;
-            case "salir":
+                
+            case "chat":
+                envio.setMensaje("-chatprivado -" + partes[1] + "..... Enviado por: " + partes[2]);
+                for(ArrayList<String> i: usuarios){
+                    if(!i.get(0).equals(partes[2])){
+                        try {
+                            enviarMensaje(envio, Integer.parseInt(i.get(1)));
+                        } catch (IOException e) {
+                            System.out.println("Error al enviar mensaje");
+                        }
+                    }
+                }
                 break;
+
+            case "chatprivado":
+                ArrayList<String> jugadorAEnviar = buscarUsuario(partes[2]);
+                ArrayList<String> nuevo =  new ArrayList<>();
+                if(jugadorAEnviar != null){
+                    try {
+                        envio.setMensaje("-chatprivado -" + partes[1] + "..... Enviado por: " + partes[3]);
+                        enviarMensaje(envio, Integer.parseInt(jugadorAEnviar.get(1)));
+                        nuevo.add(partes[1]);
+                        nuevo.add(partes[2]);
+                    } catch (IOException e) {
+                        System.out.println("Error al enviar mensaje");
+                    }
+                }
+                break;
+
+            case "pasarTurno":
+                break;
+            case "comodin":
+                break;
+            case "conectar":
+                if(password.equals(partes[3])){
+                    envio.setMensaje("conecta-" + partes[1]);
+                    ArrayList<String> nuevoUsuario = new ArrayList<>();
+                    nuevoUsuario.add(partes[1]);
+                    nuevoUsuario.add(partes[2]);
+                    usuarios.add(nuevoUsuario);
+                    enviarATodos(envio, partes[1]);
+                    System.out.println("JUGADOR CONECTADO");
+                    enviarConectados(String.valueOf(entrada.getMiPuerto()));
+                }
+                break;
+            case "comenzar":
+                enviarATodos(entrada, String.valueOf(hostPort));
+                enviarMensaje(entrada, hostPort);
+                break;
+            default:
+                System.out.println("Se Marmol");
         }
-
     }
-
-    /**
-     * @param args the command line arguments
-     */
 
     @Override
     public void run() {
@@ -95,13 +226,13 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
 
                 entrada = (ObjetoEnvio) llegada.readObject();
                 System.out.println("LLLEEEGGGGAA");
-                usuario = entrada.getNombre();
-                ip = entrada.getIp();
                 mensajeCompleto = entrada.getMensaje();
                 System.out.println(mensajeCompleto);
+
                 llegadaServidor.close();
                 llegada.close();
                 llegadaMensaje.close();
+                reconocerMensaje(entrada);
 
             }
             catch(Exception e){
