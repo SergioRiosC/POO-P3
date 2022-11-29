@@ -379,6 +379,17 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 envio.setMensaje("chao-Te has rendido, perdiste! :/");
                 enviarMensaje(envio, puertoDe(partes[1]));
                 sacarDeLista(partes[1]);
+
+                if(jugadoresFinales.size() == 1){
+                    envio = new ObjetoEnvio();
+                    envio.setMensaje("ganador-El jugador " + jugadoresFinales.get(0).getUsername() + " ha ganado");
+                    enviarATodos(envio, "-1");
+
+                    reset();
+                }
+                else{
+                    siguienteTurno();
+                }
                 break;
                 
             case "chat":
