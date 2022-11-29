@@ -49,6 +49,7 @@ public class ManejadorArchivos {
     }
     public int crear_carpeta(String ruta){
         File archivo = new File(ruta);
+
         if(archivo.mkdir()){
             return 0;
         }

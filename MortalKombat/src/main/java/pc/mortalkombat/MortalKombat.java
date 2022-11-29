@@ -13,6 +13,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -144,10 +147,12 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     }
 
     private void reconocerMensaje(ObjetoEnvio entrada){
+
         System.out.println("INGRESAAAAANDO");
         String mensaje = entrada.getMensaje();
         String[] partes = mensaje.split("-");
-
+        
+        
         System.out.println("Partes: " + partes[0]);
 
         switch(partes[0]){
@@ -248,7 +253,10 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
             case "logs":
                 logs.setText("");
-                logs.append(partes[1]);
+                String[]logsTxt=partes[1].split("#");
+                for (String log : logsTxt) {
+                    logs.append("\n"+log);
+                }
                 break;
 
         }
@@ -1083,14 +1091,20 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String[] todo = terminal.getText().split("\n");
             String tmp = todo[todo.length - 1];
+            
+            Date fecha =new Date();
+            String info=manejador.leer("archivos/"+jugadorActual.getUsername()+"/logs.txt");
+            
             if (!tmp.equals(ultimoComando)) {
                 ultimoComando = tmp;
 
-                if(ultimoComando.equals("rendirse") || ultimoComando.equals("pasarTurno")){
+                if(ultimoComando.equals("rendirse") || ultimoComando.equals("pasarTurno")||ultimoComando.equals("logs")){
+                    manejador.escribir("archivos/"+jugadorActual.getUsername()+"/logs.txt",info+"\n"+ fecha+"=> "+ ultimoComando.replace("-", "/"));
                     enviarMensaje(ultimoComando + "-" + jugadorActual.getUsername());
                 }
 
                 else{
+                    manejador.escribir("archivos/"+jugadorActual.getUsername()+"/logs.txt",info+"#"+ fecha+"=> "+ ultimoComando.replace("-", "/"));
                     System.out.println(ultimoComando);
                     String[] comando = ultimoComando.split("-");
                     if(comando[0].equals("chatprivado") || comando[0].equals("chat") || comando[0].equals("select") || comando[0].equals("atacar")){

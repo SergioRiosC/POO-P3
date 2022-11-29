@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -81,6 +82,9 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
     }
 
     private void enviarMensaje(ObjetoEnvio mensaje, int puerto) throws IOException {
+        String info=manejador.leer("archivos/"+getUser(puerto)+"/logs.txt");
+        
+        manejador.escribir("archivos/"+getUser(puerto)+"/logs.txt", info+" | RESPUESTA => "+ mensaje.getMensaje().replace("-", " ")+"#");
         try {
             Socket envioDeMensaje = new Socket("127.0.0.1", puerto);
             ObjectOutputStream reenvio = new ObjectOutputStream(envioDeMensaje.getOutputStream());
@@ -91,6 +95,15 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         } catch (IOException e) {
             System.out.println("Error al enviar mensaje");
         }
+    }
+    
+    private String getUser(int port){
+        for (Usuario jugador : jugadoresFinales) {
+            if(jugador.port==port){
+                return jugador.getUsername();
+            }
+        }
+        return null;
     }
 
     private ArrayList<String> buscarUsuario(String nombre){
@@ -351,6 +364,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                         }
                         else{
                             envio.setMensaje("error-Esta arma ya ha sido usada, usa otra!");
+                            
                             enviarMensaje(envio, puertoDe(usuarioQueAtaca));
                         }
                     }
@@ -488,6 +502,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 break;
 
             case "logs": //logs -jugadorQueEnvia
+                System.out.println("LOGS: ENVIA: "+partes[1]);
                 envio.setMensaje("logs-" + manejador.leer("archivos/" + partes[1] + "/logs.txt"));
                 enviarMensaje(envio, puertoDe(partes[1]));
 
