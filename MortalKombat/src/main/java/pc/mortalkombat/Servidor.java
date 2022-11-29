@@ -258,7 +258,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
 
                             getUsuario(nombreAtacado).actualizarGuerrero(guerreroAtacado);
                             armaAtacante.setUsada();
-                            getUsuario(usuarioQueAtaca).modificarArma(armaAtacante);
+                            getUsuario(usuarioQueAtaca).modificarArma(armaAtacante, guerreroAtacante.nombre);
 
                             envio.setMensaje("ataqueRecibido-El jugador " + usuarioQueAtaca + " te ha atacado con " + armaAtacante.tipo + " y te ha dejado con " + guerreroAtacado.vida + " de vida");
                             enviarMensaje(envio, puertoDe(nombreAtacado));
@@ -284,7 +284,22 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                                 envio = new ObjetoEnvio();
                                 envio.setMensaje("muerte-Tu guerrero " + guerreroAtacado.nombre + " ha muerto!");
                                 enviarMensaje(envio, puertoDe(nombreAtacado));
-                                getUsuario(nombreAtacado).eliminarGuerrero(guerreroAtacado.nombre);
+
+                                getUsuario(nombreAtacado).eliminarGuerrero();
+                                envio = new ObjetoEnvio();
+                                envio.setMensaje("guerreros-");
+                                envio.setGuerreros(getUsuario(nombreAtacado).guerreros);
+                                enviarMensaje(envio, puertoDe(nombreAtacado));
+
+                                try{
+                                    envio = new ObjetoEnvio();
+                                    getUsuario(nombreAtacado).setSeleccionado(getUsuario(nombreAtacado).guerreros.get(0));
+                                    envio.setMensaje("seleccionarJugador-$ Se ha seleccionado a " + getUsuario(nombreAtacado).seleccionado.nombre + "!");
+                                    enviarMensaje(envio, puertoDe(nombreAtacado));
+                                }
+                                catch(Exception e){
+                                }
+                                System.out.println("TAM: " + getUsuario(nombreAtacado).guerreros.size());
 
                                 if(getUsuario(nombreAtacado).guerreros.size() == 0){
                                     envio = new ObjetoEnvio();

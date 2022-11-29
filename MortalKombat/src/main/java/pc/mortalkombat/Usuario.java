@@ -73,37 +73,44 @@ public class Usuario implements Serializable{
         return guerreros;
     }
 
-    public void eliminarGuerrero(String name){
+    public void eliminarGuerrero(){
         ArrayList<Guerrero> aux = new ArrayList<>();
         for(Guerrero i: guerreros){
-            if(!i.nombre.equals(name)){
+            if(i.vida > 0){
                 aux.add(i);
             }
         }
+        guerreros = aux;
     }
 
     public void actualizarGuerrero(Guerrero g){
         ArrayList<Guerrero> aux = new ArrayList<>();
         for(Guerrero i: guerreros){
-            if(!i.nombre.equals(g.nombre)){
+            if(!i.nombre.equals(g.nombre)) {
                 aux.add(i);
-            }else{
+            }else {
                 aux.add(g);
             }
         }
         guerreros = aux;
     }
 
-    public void modificarArma(Arma a){
-        ArrayList<Arma> aux = new ArrayList<>();
-        for(Arma i: seleccionado.armas){
-            if(!i.tipo.equals(a.tipo)){
-                aux.add(i);
-            }else{
-                aux.add(a);
+    public Guerrero getGuerrero(String name){
+        for(Guerrero i: guerreros){
+            if(i.nombre.equals(name)){
+                return i;
             }
         }
-        seleccionado.armas = aux.toArray(new Arma[0]);
+        return null;
+    }
+
+    public void modificarArma(Arma a, String g){
+        Guerrero mod = getGuerrero(g);
+        for(Arma i : mod.armas){
+            if(i.tipo.equals(a.tipo)){
+                i.ataque = a.ataque;
+            }
+        }
     }
    
     
