@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +36,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     Partida p;
 
     boolean alerta = false;
+    int cantidadGuerros = 4;
 
     private Socket socket;
     private ObjetoEnvio mensaje;
@@ -125,6 +128,21 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         
     }
 
+    private String getGuerreros(){
+        String[] gs = manejador.archivosEnDirectorio("archivos/" + jugadorActual.getUsername() + "/guerreros");
+        ArrayList<Guerrero> guerreros = new ArrayList<>();
+        for(String j: gs){
+            guerreros.add(manejador.buscarGuerrero(jugadorActual.getUsername(), j));
+        }
+
+        String tmp = "";
+        for(Guerrero i: guerreros){
+            tmp += i.nombre + "- vida: " + i.vida + "%\n";
+            tmp += "Armas: " + i.getArmas() + "\n";
+        }
+        return tmp;
+    }
+
     private void reconocerMensaje(String mensaje){
         System.out.println("INGRESAAAAANDO");
         String[] partes = mensaje.split("-");
@@ -139,6 +157,8 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
             case "comenzar":
                 jugadores_partida.setText(jugadores_conectados.getText());
+                mis_guerros.append(getGuerreros());
+
                 pantallas.setSelectedIndex(5);
                 break;
 
@@ -167,6 +187,15 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
             case "chao":
                 JOptionPane.showMessageDialog(pantallas, partes[1], "Error", JOptionPane.WARNING_MESSAGE);
                 terminal.setEnabled(false);
+                break;
+
+            case "seleccionarJugador":
+                terminal.append("\n" + partes[1]);
+                break;
+
+            case "turno":
+                turno_jugando.setText("");
+                turno_jugando.append("\n" + partes[1]);
                 break;
         }
     }
@@ -262,13 +291,29 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         jScrollPane4 = new javax.swing.JScrollPane();
         jugadores_partida = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
+        turno_jugando = new javax.swing.JTextArea();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTextArea5 = new javax.swing.JTextArea();
+        mis_guerros = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTextArea6 = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
         jTextArea7 = new javax.swing.JTextArea();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        nombre_personaje = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        arma1 = new javax.swing.JComboBox<>();
+        arma2 = new javax.swing.JComboBox<>();
+        arma3 = new javax.swing.JComboBox<>();
+        arma4 = new javax.swing.JComboBox<>();
+        arma5 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         unirse_partida2.setBackground(new java.awt.Color(204, 204, 204));
         unirse_partida2.setForeground(new java.awt.Color(255, 255, 255));
@@ -645,23 +690,23 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
         jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, 216));
 
-        jTextArea4.setEditable(false);
-        jTextArea4.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea4.setColumns(20);
-        jTextArea4.setForeground(new java.awt.Color(153, 153, 0));
-        jTextArea4.setLineWrap(true);
-        jTextArea4.setRows(5);
-        jScrollPane5.setViewportView(jTextArea4);
+        turno_jugando.setEditable(false);
+        turno_jugando.setBackground(new java.awt.Color(0, 0, 0));
+        turno_jugando.setColumns(20);
+        turno_jugando.setForeground(new java.awt.Color(153, 153, 0));
+        turno_jugando.setLineWrap(true);
+        turno_jugando.setRows(5);
+        jScrollPane5.setViewportView(turno_jugando);
 
         jPanel6.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 228, -1, 170));
 
-        jTextArea5.setEditable(false);
-        jTextArea5.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea5.setColumns(20);
-        jTextArea5.setForeground(new java.awt.Color(153, 153, 0));
-        jTextArea5.setLineWrap(true);
-        jTextArea5.setRows(5);
-        jScrollPane6.setViewportView(jTextArea5);
+        mis_guerros.setEditable(false);
+        mis_guerros.setBackground(new java.awt.Color(0, 0, 0));
+        mis_guerros.setColumns(20);
+        mis_guerros.setForeground(new java.awt.Color(153, 153, 0));
+        mis_guerros.setLineWrap(true);
+        mis_guerros.setRows(5);
+        jScrollPane6.setViewportView(mis_guerros);
 
         jPanel6.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, 540, 560));
 
@@ -687,18 +732,90 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
         pantallas.addTab("tab6", jPanel6);
 
+        jPanel7.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Herculanum", 1, 70)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(51, 204, 0));
+        jLabel8.setText("Creacion de Guerreos");
+        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 6, -1, -1));
+        jPanel7.add(nombre_personaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(285, 95, 728, 47));
+
+        jLabel7.setFont(new java.awt.Font("Herculanum", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Nombre");
+        jPanel7.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(599, 154, -1, -1));
+
+        arma1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fuego", "Aire", "Agua", "Magia Blanca", "Magia Negra", "Electricidad", "Hielo", "Acid", "Espiritualidad", "Hierro" }));
+        jPanel7.add(arma1, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 250, 239, -1));
+
+        arma2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fuego", "Aire", "Agua", "Magia Blanca", "Magia Negra", "Electricidad", "Hielo", "Acid", "Espiritualidad", "Hierro" }));
+        jPanel7.add(arma2, new org.netbeans.lib.awtextra.AbsoluteConstraints(498, 250, 239, -1));
+
+        arma3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fuego", "Aire", "Agua", "Magia Blanca", "Magia Negra", "Electricidad", "Hielo", "Acid", "Espiritualidad", "Hierro" }));
+        jPanel7.add(arma3, new org.netbeans.lib.awtextra.AbsoluteConstraints(995, 250, 239, -1));
+
+        arma4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fuego", "Aire", "Agua", "Magia Blanca", "Magia Negra", "Electricidad", "Hielo", "Acid", "Espiritualidad", "Hierro" }));
+        jPanel7.add(arma4, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 409, 239, -1));
+
+        arma5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fuego", "Aire", "Agua", "Magia Blanca", "Magia Negra", "Electricidad", "Hielo", "Acid", "Espiritualidad", "Hierro" }));
+        jPanel7.add(arma5, new org.netbeans.lib.awtextra.AbsoluteConstraints(741, 409, 239, -1));
+
+        jLabel9.setFont(new java.awt.Font("Herculanum", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("ARMA 1");
+        jPanel7.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 279, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Herculanum", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("ARMA 2");
+        jPanel7.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(583, 279, -1, -1));
+
+        jLabel11.setFont(new java.awt.Font("Herculanum", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("ARMA 3");
+        jPanel7.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(1086, 279, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Herculanum", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("ARMA 4");
+        jPanel7.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(347, 438, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Herculanum", 1, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("ARMA 5");
+        jPanel7.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(827, 438, -1, -1));
+
+        jButton3.setText("Guardar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 520, 311, 52));
+
+        jButton5.setText("Menu Principal");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 700, -1, -1));
+
+        pantallas.addTab("tab7", jPanel7);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(pantallas, javax.swing.GroupLayout.PREFERRED_SIZE, 1271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pantallas, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(pantallas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -725,21 +842,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
     private void configuracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configuracionActionPerformed
         // TODO add your handling code here:
-
-        /*
-        jugadorActual.generarGuerreros(nombre_guerrero1.getText(), 0, tipo_guerrero1.getText());
-        
-        jugadorActual.generarGuerreros(nombre_guerrero2.getText(), 1, tipo_guerrero2.getText());
-        
-        jugadorActual.generarGuerreros(nombre_guerrero3.getText(), 2, tipo_guerrero3.getText());
-        
-        jugadorActual.generarGuerreros(nombre_guerrero4.getText(), 3, tipo_guerrero4.getText());
-         */
-        System.out.println("CONF");
-        jugadorActual.generarGuerreros("GUERRERRO 1", 0, "HIELO");
-        jugadorActual.generarGuerreros("GUERRERRO 2", 1, "FUEGO");
-        jugadorActual.generarGuerreros("GUERRERRO 3", 2, "AGUA");
-        jugadorActual.generarGuerreros("GUERRERRO 4", 3, "AIRE");
+        pantallas.setSelectedIndex(6);
 
     }//GEN-LAST:event_configuracionActionPerformed
 
@@ -853,28 +956,34 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
     private void crear_crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_crearActionPerformed
         // TODO add your handling code here:
-        pantallas.setSelectedIndex(4);
-        claveCreacion = clave_crear.getText();
-        contadorPartida = 0;
-        agregarJugador(jugadorActual.getUsername());
-        p=new Partida(claveCreacion,"127.0.0.1");
-        p.jugadores.add(jugadorActual);
-        jugadores.add(jugadorActual);
-        
+        String[] guerreos = manejador.archivosEnDirectorio("archivos/" + jugadorActual.getUsername() + "/guerreros");
+        if(guerreos.length == cantidadGuerros){
+            pantallas.setSelectedIndex(4);
+            claveCreacion = clave_crear.getText();
+            contadorPartida = 0;
+            agregarJugador(jugadorActual.getUsername());
+            p=new Partida(claveCreacion,"127.0.0.1");
+            p.jugadores.add(jugadorActual);
+            jugadores.add(jugadorActual);
 
-        clave_espera.setText("Clave: " + claveCreacion);
-        clave_espera.setVerticalAlignment(0);
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MortalKombat.class.getName()).log(Level.SEVERE, null, ex);
+
+            clave_espera.setText("Clave: " + claveCreacion);
+            clave_espera.setVerticalAlignment(0);
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MortalKombat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            comenzar_partida.setVisible(true);
+            try{
+                enviarMensaje("nuevo-" + jugadorActual.getUsername() + "-" + jugadorActual.port + "-" + claveCreacion);
+            }
+            catch(IOException e){
+
+            }
         }
-        comenzar_partida.setVisible(true);
-        try{
-            enviarMensaje("nuevo-" + jugadorActual.getUsername() + "-" + jugadorActual.port + "-" + claveCreacion);
-        }
-        catch(IOException e){
-            
+        else{
+            JOptionPane.showMessageDialog(pantallas, "Debe crear minimo " + cantidadGuerros + " guerreros!!!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_crear_crearActionPerformed
 
@@ -910,21 +1019,25 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
     private void unirse_unirseActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_unirse_unirseActionPerformed
         // TODO add your handling code here:
-        jugadores.add(jugadorActual);
-        agregarJugador(jugadorActual.getUsername());
-        //p=c.hilo.getPartida(ip.getText(), clave.getText(), jugadorActual.getUsername());
-        //p.jugadores.add(jugadorActual);
-        System.out.println("UNIDO");
-        
-        comenzar_partida.setVisible(false);
-        clave_espera.setText("Esperando al Anfitrion...");
-        pantallas.setSelectedIndex(4);
-        try {
-            //-conectar -nombre -port -password
-            enviarMensaje("conectar-" + jugadorActual.getUsername() + "-" + jugadorActual.port + "-" + clave.getText());
-        }
-        catch(IOException e){
+        String[] guerreos = manejador.archivosEnDirectorio("archivos/" + jugadorActual.getUsername() + "/guerreros");
+        if(guerreos.length == cantidadGuerros){
+            jugadores.add(jugadorActual);
+            agregarJugador(jugadorActual.getUsername());
+            System.out.println("UNIDO");
 
+            comenzar_partida.setVisible(false);
+            clave_espera.setText("Esperando al Anfitrion...");
+            pantallas.setSelectedIndex(4);
+            try {
+                //-conectar -nombre -port -password
+                enviarMensaje("conectar-" + jugadorActual.getUsername() + "-" + jugadorActual.port + "-" + clave.getText());
+            }
+            catch(IOException e){
+
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(pantallas, "Debe crear minimo " + cantidadGuerros + " guerreros!!!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_unirse_unirseActionPerformed
 
@@ -941,6 +1054,56 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
             }
         }
     }//GEN-LAST:event_comenzar_partidaActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        pantallas.setSelectedIndex(2);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                                                 
+        // TODO add your handling code here:
+
+        String nombre = nombre_personaje.getText();
+
+        String[] archivos = manejador.archivosEnDirectorio("archivos/" + jugadorActual.getUsername() + "/guerreros");
+        ArrayList<String> archivos2 =  new ArrayList<String>(Arrays.asList(archivos));
+
+        Random random = new Random();
+
+        if(archivos.length < cantidadGuerros){
+            if(!archivos2.contains(nombre + ".txt")){
+                Arma a1 = new Arma(arma1.getSelectedItem().toString(), random.nextInt(20, 100));
+                Arma a2 = new Arma(arma2.getSelectedItem().toString(), random.nextInt(20, 100));
+                Arma a3 = new Arma(arma3.getSelectedItem().toString(), random.nextInt(20, 100));
+                Arma a4 = new Arma(arma4.getSelectedItem().toString(), random.nextInt(20, 100));
+                Arma a5 = new Arma(arma5.getSelectedItem().toString(), random.nextInt(20, 100));
+
+                ArrayList<Arma> armas = new ArrayList<>();
+                armas.add(a1);
+                armas.add(a2);
+                armas.add(a3);
+                armas.add(a4);
+                armas.add(a5);
+
+                Guerrero guerrero = new Guerrero(nombre, armas);
+                manejador.guardarGuerraro(jugadorActual.getUsername(), nombre, guerrero);
+                JOptionPane.showMessageDialog(pantallas, "Guerrero guardado!", "Guardado", JOptionPane.INFORMATION_MESSAGE);
+                nombre_personaje.setText("");
+                arma1.setSelectedIndex(0);
+                arma2.setSelectedIndex(0);
+                arma3.setSelectedIndex(0);
+                arma4.setSelectedIndex(0);
+                arma5.setSelectedIndex(0);
+            }
+            else{
+                JOptionPane.showMessageDialog(pantallas, "Ya existe un personaje con ese nombre!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(pantallas, "Ya tienes 4 personajes!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }                                        
 
     /**
      * @param args the command line arguments
@@ -979,6 +1142,11 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> arma1;
+    private javax.swing.JComboBox<String> arma2;
+    private javax.swing.JComboBox<String> arma3;
+    private javax.swing.JComboBox<String> arma4;
+    private javax.swing.JComboBox<String> arma5;
     private javax.swing.JToggleButton atras;
     private javax.swing.JTextField clave;
     private javax.swing.JTextField clave_crear;
@@ -994,20 +1162,30 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     private javax.swing.JLabel ip_text;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1017,8 +1195,6 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea4;
-    private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
     private javax.swing.JTextArea jTextArea7;
     private javax.swing.JTextArea jugadores_conectados;
@@ -1026,6 +1202,8 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     private javax.swing.JButton jugar;
     private javax.swing.JLabel jugar_label;
     private javax.swing.JButton login_but;
+    private javax.swing.JTextArea mis_guerros;
+    private javax.swing.JTextField nombre_personaje;
     private javax.swing.JTabbedPane pantallas;
     private javax.swing.JPasswordField password_login;
     private javax.swing.JPasswordField password_registrarse;
@@ -1033,6 +1211,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     private javax.swing.JToggleButton registrarse1;
     private javax.swing.JButton registrarse_but;
     private javax.swing.JTextArea terminal;
+    private javax.swing.JTextArea turno_jugando;
     private javax.swing.JToggleButton unirse;
     private javax.swing.JButton unirse_partida2;
     private javax.swing.JToggleButton unirse_unirse;

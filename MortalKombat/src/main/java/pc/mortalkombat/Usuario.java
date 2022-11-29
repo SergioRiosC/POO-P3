@@ -7,6 +7,7 @@ package pc.mortalkombat;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,7 +17,8 @@ public class Usuario implements Serializable{
     private String username;
     private String nombre;
     private String password;
-    private Guerrero[] guerreros=new Guerrero[4];
+    private ArrayList<Guerrero> guerreros = new ArrayList<>();
+    Guerrero seleccionado;
     private int victorias=0;
     private int derrotas=0;
     private int ataques=0;
@@ -45,15 +47,24 @@ public class Usuario implements Serializable{
         return password;
     }
 
-   public void generarGuerreros(String name, int i,String tipo){
-       /*for (int i=0;i<guerreros.length;i++) {
-            guerreros[i]=new Guerrero();
-        }*/
-       guerreros[i]=new Guerrero(name,tipo);
-       System.out.println("GUERRERO "+i+" GENERADO");
-   }
+    public void addGuerrero(Guerrero g){
+        guerreros.add(g);
+    }
 
-    public Guerrero[] getGuerreros() {
+    public void selectGuerrero(int pos){
+        seleccionado = guerreros.get(pos);
+    }
+
+    public String guerrosToString(){
+        String tmp = "";
+        for(Guerrero i: guerreros){
+            tmp += i.nombre + "- vida: " + i.vida + "%\n";
+            tmp += "Armas: \n" + i.getArmas() + "\n";
+        }
+        return tmp;
+    }
+
+    public ArrayList<Guerrero> getGuerreros() {
         return guerreros;
     }
    

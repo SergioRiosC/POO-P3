@@ -24,6 +24,8 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
     private int hostPort = 0;
     private String host = "";
 
+    ManejadorArchivos manejador = new ManejadorArchivos();
+
     int turno = 0;
     Usuario turnoActual;
 
@@ -65,9 +67,9 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void enviarMensaje(ObjetoEnvio mensaje, int ip) throws IOException {
+    private void enviarMensaje(ObjetoEnvio mensaje, int puerto) throws IOException {
         try {
-            Socket envioDeMensaje = new Socket("127.0.0.1", ip);
+            Socket envioDeMensaje = new Socket("127.0.0.1", puerto);
             ObjectOutputStream reenvio = new ObjectOutputStream(envioDeMensaje.getOutputStream());
             reenvio.writeObject(mensaje);
             System.out.println("---Enviado---");
@@ -235,6 +237,9 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                     envio.setMensaje("error-$ No es tu turno!");
                     enviarMensaje(envio, puertoDe(partes[1]));
                 }
+                envio = new ObjetoEnvio();
+                envio.setMensaje("turno-Turno Actual: " + turnoActual.getUsername());
+                enviarATodos(envio, "-1");
                 break;
             case "comodin":
                 break;
@@ -262,10 +267,23 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 enviarMensaje(entrada, hostPort);
                 for(ArrayList<String> i: usuarios){
                     Usuario u = new Usuario(i.get(0), Integer.parseInt(i.get(1)));
+                    String[] gs = manejador.archivosEnDirectorio("archivos/" + u.getUsername() + "/guerreros");
+                    for(String j: gs){
+                        u.addGuerrero(manejador.buscarGuerrero(u.getUsername(), j));
+                    }
+                    u.selectGuerrero(0);
                     jugadoresFinales.add(u);
                 }
                 turnoActual = jugadoresFinales.get(turno);
                 iniciada = true;
+                for(Usuario u: jugadoresFinales){
+                    envio = new ObjetoEnvio();
+                    envio.setMensaje("seleccionarJugador-$ Guerrero seleccionado: " + u.seleccionado.nombre);
+                    enviarMensaje(envio, u.port);
+                }
+                envio = new ObjetoEnvio();
+                envio.setMensaje("turno-Turno Actual: " + turnoActual.getUsername());
+                enviarATodos(envio, "-1");
                 break;
             default:
                 System.out.println("Se Marmol");

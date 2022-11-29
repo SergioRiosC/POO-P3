@@ -68,6 +68,7 @@ public class ManejadorArchivos {
             System.out.println(usr.getPassword());
             
             escribir("archivos/" + usr.getUsername() + "/password.txt", usr.getPassword());
+            crear_carpeta("archivos/" + usr.getUsername() + "/guerreros");
             
             
             return true;
@@ -84,6 +85,49 @@ public class ManejadorArchivos {
 
         }
         return false;
+    }
+
+    public boolean guardarGuerraro(String usr, String nombre, Guerrero guerrero){
+
+        FileOutputStream fichero = null;
+        try {
+            fichero = new FileOutputStream("archivos/" + usr + "/guerreros/" + nombre + ".txt",false);
+            ObjectOutputStream tuberia = new ObjectOutputStream(fichero);
+            tuberia.writeObject(guerrero);
+            return true;
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                fichero.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return false;
+    }
+
+    public Guerrero buscarGuerrero(String username, String guerrero){
+        Guerrero g=null;
+        FileInputStream ficheroEntrada=null;
+
+        try{
+
+            ficheroEntrada= new FileInputStream("archivos/" + username + "/guerreros/" + guerrero);
+            ObjectInputStream tuberiaEntrada = new ObjectInputStream(ficheroEntrada);
+            g=(Guerrero)tuberiaEntrada.readObject();
+
+        }catch(FileNotFoundException ex){
+            ex.printStackTrace();
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }catch(ClassNotFoundException ex){
+            ex.printStackTrace();
+        }
+        return g;
     }
     
     public Usuario buscarusuario(String username){
@@ -104,6 +148,12 @@ public class ManejadorArchivos {
             ex.printStackTrace();
         }
         return u;
+    }
+
+    public String[] archivosEnDirectorio(String directorio){
+        File carpeta = new File(directorio);
+        String[] archivos = carpeta.list();
+        return archivos;
     }
     
     
