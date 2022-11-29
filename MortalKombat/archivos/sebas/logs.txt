@@ -1,1 +1,0 @@
- | RESPUESTA => seleccionarJugador $ Guerrero seleccionado: s1# | RESPUESTA => turno Turno Actual: ser# | RESPUESTA => seleccionarJugador $ Guerrero seleccionado: s1# | RESPUESTA => turno Turno Actual: ser#

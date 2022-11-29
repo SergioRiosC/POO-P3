@@ -54,12 +54,12 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 300, Short.MAX_VALUE)
         );
 
         Thread entradaDatos = new Thread(this);
@@ -83,7 +83,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
 
     private void enviarMensaje(ObjetoEnvio mensaje, int puerto) throws IOException {
         String info=manejador.leer("archivos/"+getUser(puerto)+"/logs.txt");
-        
+
         manejador.escribir("archivos/"+getUser(puerto)+"/logs.txt", info+" | RESPUESTA => "+ mensaje.getMensaje().replace("-", " ")+"#");
         try {
             Socket envioDeMensaje = new Socket("127.0.0.1", puerto);
@@ -96,7 +96,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
             System.out.println("Error al enviar mensaje");
         }
     }
-    
+
     private String getUser(int port){
         for (Usuario jugador : jugadoresFinales) {
             if(jugador.port==port){
@@ -211,6 +211,28 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         ObjetoEnvio envio = new ObjetoEnvio();
         envio.setMensaje("turno-Turno Actual: " + turnoActual.getUsername());
         enviarATodos(envio, "-1");
+    }
+
+    private void recargarArmas(Usuario u){
+        boolean recargar = false;
+        for(Guerrero g: u.guerreros){
+            for(Arma a: g.armas){
+                if(a.usada){
+                    recargar = true;
+                    break;
+                }
+            }
+        }
+
+        if(!recargar){
+            for(Guerrero x: u.guerreros){
+                for(Arma i: x.armas){
+                    if(i.usada){
+                        i.usada = false;
+                    }
+                }
+            }
+        }
     }
 
     private void reconocerMensaje(ObjetoEnvio entrada) throws IOException {
@@ -347,6 +369,8 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
 
                                 System.out.println("cANT USUARIOS: " + jugadoresFinales.size());
 
+                                recargarArmas(getUsuario(usuarioQueAtaca)); //recarga de armas
+
                                 if(jugadoresFinales.size() == 1){
                                     envio = new ObjetoEnvio();
                                     envio.setMensaje("ganador-El jugador " + jugadoresFinales.get(0).getUsername() + " ha ganado");
@@ -364,7 +388,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                         }
                         else{
                             envio.setMensaje("error-Esta arma ya ha sido usada, usa otra!");
-                            
+
                             enviarMensaje(envio, puertoDe(usuarioQueAtaca));
                         }
                     }
@@ -409,7 +433,7 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                     siguienteTurno();
                 }
                 break;
-                
+
             case "chat":
                 envio.setMensaje("chatprivado-" + partes[1] + "..... Enviado (publicamente) por: " + partes[2]);
                 for(ArrayList<String> i: usuarios){

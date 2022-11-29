@@ -109,6 +109,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         Thread hilo = new Thread(this);
         hilo.start();
     }
+
     
     public void enviarMensaje(String mensaje) throws IOException {
         try{
@@ -252,11 +253,14 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
                 break;
 
             case "logs":
-                logs.setText("");
-                String[]logsTxt=partes[1].split("#");
-                for (String log : logsTxt) {
-                    logs.append("\n"+log);
+                System.out.println(entrada.getMensaje());
+                String aux = "";
+                String[] logsTxt= entrada.getMensaje().split("#");
+
+                for (String i : logsTxt) {
+                    aux += i + "\n";
                 }
+                logs.setText(aux);
                 break;
 
         }
@@ -405,6 +409,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         unirse_partida2.setText("Unirse");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 50)); // NOI18N
         jLabel1.setText("Login");
@@ -897,19 +902,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
         pantallas.addTab("tab7", jPanel7);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(pantallas, javax.swing.GroupLayout.PREFERRED_SIZE, 1271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pantallas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
+        getContentPane().add(pantallas, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, -36, -1, 800));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
