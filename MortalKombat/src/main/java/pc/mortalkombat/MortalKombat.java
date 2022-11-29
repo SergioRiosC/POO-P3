@@ -244,6 +244,12 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
                 catch (Exception e){
                     System.out.println("Error al recibir guerreros");
                 }
+                break;
+
+            case "logs":
+                logs.setText("");
+                logs.append(partes[1]);
+                break;
 
         }
     }
@@ -355,7 +361,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         clave_espera = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        logs = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         terminal = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -725,12 +731,12 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(153, 153, 0));
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        logs.setEditable(false);
+        logs.setBackground(new java.awt.Color(0, 0, 0));
+        logs.setColumns(20);
+        logs.setForeground(new java.awt.Color(153, 153, 0));
+        logs.setRows(5);
+        jScrollPane2.setViewportView(logs);
 
         jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 404, -1, 168));
 
@@ -1286,12 +1292,12 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jugadores_conectados;
     private javax.swing.JTextArea jugadores_partida;
     private javax.swing.JButton jugar;
     private javax.swing.JLabel jugar_label;
     private javax.swing.JButton login_but;
+    private javax.swing.JTextArea logs;
     private javax.swing.JTextArea mis_guerros;
     private javax.swing.JTextField nombre_personaje;
     private javax.swing.JTabbedPane pantallas;

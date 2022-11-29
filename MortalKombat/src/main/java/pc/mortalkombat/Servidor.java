@@ -201,6 +201,10 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
     }
 
     private void reconocerMensaje(ObjetoEnvio entrada) throws IOException {
+        // logs por aca:
+
+
+        //////////
         String mensaje = entrada.getMensaje();
         String[] partes = mensaje.split("-");
         /*
@@ -482,6 +486,11 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 envio.setMensaje("turno-Turno Actual: " + turnoActual.getUsername());
                 enviarATodos(envio, "-1");
                 break;
+
+            case "logs": //logs -jugadorQueEnvia
+                envio.setMensaje("logs-" + manejador.leer("archivos/" + partes[1] + "/logs.txt"));
+                enviarMensaje(envio, puertoDe(partes[1]));
+
             default:
                 System.out.println("Se Marmol");
         }
