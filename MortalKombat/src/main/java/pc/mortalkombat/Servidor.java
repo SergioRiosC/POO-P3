@@ -67,6 +67,19 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void reset(){
+        usuarios = new ArrayList<>();
+        jugadoresFinales = new ArrayList<>();
+        puerto = 10201;
+        password = "";
+        hostPort = 0;
+        host = "";
+        turno = 0;
+        iniciada = false;
+        partida = null;
+        turnoActual = null;
+    }
+
     private void enviarMensaje(ObjetoEnvio mensaje, int puerto) throws IOException {
         try {
             Socket envioDeMensaje = new Socket("127.0.0.1", puerto);
@@ -299,7 +312,6 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                                 }
                                 catch(Exception e){
                                 }
-                                System.out.println("TAM: " + getUsuario(nombreAtacado).guerreros.size());
 
                                 if(getUsuario(nombreAtacado).guerreros.size() == 0){
                                     envio = new ObjetoEnvio();
@@ -313,18 +325,17 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
 
                                 envio = new ObjetoEnvio();
                                 envio.setMensaje("guerreros-");
-                                envio.setGuerreros(getUsuario(nombreAtacado).guerreros);
-                                enviarMensaje(envio, puertoDe(nombreAtacado));
-
-                                envio = new ObjetoEnvio();
-                                envio.setMensaje("guerreros-");
                                 envio.setGuerreros(getUsuario(usuarioQueAtaca).guerreros);
                                 enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+
+                                System.out.println("cANT USUARIOS: " + jugadoresFinales.size());
 
                                 if(jugadoresFinales.size() == 1){
                                     envio = new ObjetoEnvio();
                                     envio.setMensaje("ganador-El jugador " + jugadoresFinales.get(0).getUsername() + " ha ganado");
                                     enviarATodos(envio, "-1");
+
+                                    reset();
                                 }
                                 else{
                                     siguienteTurno();

@@ -187,7 +187,9 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
             case "chao":
                 JOptionPane.showMessageDialog(pantallas, partes[1], "Error", JOptionPane.WARNING_MESSAGE);
-                terminal.setEnabled(false);
+                terminal.setText("");
+                pantallas.setSelectedIndex(2);
+                jugadores_conectados.setText("");
                 break;
 
             case "seleccionarJugador":
@@ -217,13 +219,16 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
             case "derrota":
                 JOptionPane.showMessageDialog(pantallas, partes[1], "Derrota", JOptionPane.WARNING_MESSAGE);
-                terminal.setEnabled(false);
+                terminal.setText("");
+                pantallas.setSelectedIndex(2);
+                jugadores_conectados.setText("");
                 break;
 
             case "ganador":
                 JOptionPane.showMessageDialog(pantallas, partes[1], "Ganador", JOptionPane.INFORMATION_MESSAGE);
-                pantallas.setSelectedIndex(4);
-                terminal.setEnabled(true);
+                pantallas.setSelectedIndex(2);
+                terminal.setText("");
+                jugadores_conectados.setText("");
                 break;
 
             case "guerreros":
