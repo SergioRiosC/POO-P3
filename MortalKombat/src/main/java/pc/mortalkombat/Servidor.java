@@ -158,6 +158,35 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         return null;
     }
 
+    private Guerrero getSeleccionado(String usuario){
+        for(Usuario i: jugadoresFinales){
+            if(i.getUsername().equals(usuario)){
+                return i.seleccionado;
+            }
+        }
+        return null;
+    }
+
+    private Usuario getUsuario(String usuario){
+        for(Usuario i: jugadoresFinales){
+            if(i.getUsername().equals(usuario)){
+                return i;
+            }
+        }
+        return null;
+    }
+
+    private void siguienteTurno() throws IOException {
+        turno++;
+        if(turno == jugadoresFinales.size()){
+            turno = 0;
+        }
+        turnoActual = jugadoresFinales.get(turno);
+        ObjetoEnvio envio = new ObjetoEnvio();
+        envio.setMensaje("turno-Turno Actual: " + turnoActual.getUsername());
+        enviarATodos(envio, "-1");
+    }
+
     private void reconocerMensaje(ObjetoEnvio entrada) throws IOException {
         String mensaje = entrada.getMensaje();
         String[] partes = mensaje.split("-");
@@ -198,8 +227,111 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 System.out.println("Nuevo host port: " + hostPort);
                 System.out.println("Nuevo password: " + password);
                 break;
+
             case "atacar":
+                String usuarioQueAtaca = partes[4];
+                if(turnoActual.getUsername().equals(usuarioQueAtaca)){
+                    String nombreAtacado = partes[1];
+                    String nombrePersonaje2 = partes[2];
+                    String arma = partes[3];
+                    Guerrero guerreroAtacante = getPersonaje(usuarioQueAtaca, nombrePersonaje2);
+                    Arma armaAtacante = guerreroAtacante.getArma(arma);
+
+                    if(guerreroAtacante == null || armaAtacante == null){
+                        envio.setMensaje("error-Error al atacar (no se encontró el guerrero o el arma)");
+                        enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+                        break;
+                    }
+                    else{
+                        if(guerreroAtacante == null || armaAtacante == null){
+                            envio.setMensaje("error-Error al atacar (Guerrero o Arma no reconocidos)");
+                            enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+                            break;
+                        }
+                        else{
+
+                        }
+
+                        if(!armaAtacante.usada){
+                            Guerrero guerreroAtacado = getSeleccionado(nombreAtacado);
+                            guerreroAtacado.restarVida(armaAtacante.ataque);
+
+                            getUsuario(nombreAtacado).actualizarGuerrero(guerreroAtacado);
+                            armaAtacante.setUsada();
+                            getUsuario(usuarioQueAtaca).modificarArma(armaAtacante);
+
+                            envio.setMensaje("ataqueRecibido-El jugador " + usuarioQueAtaca + " te ha atacado con " + armaAtacante.tipo + " y te ha dejado con " + guerreroAtacado.vida + " de vida");
+                            enviarMensaje(envio, puertoDe(nombreAtacado));
+                            envio = new ObjetoEnvio();
+                            envio.setMensaje("ataqueRealizado-Has atacado a " + nombreAtacado + " con " + armaAtacante.tipo + " y le has dejado con " + guerreroAtacado.vida + " de vida");
+                            enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+
+                            envio = new ObjetoEnvio();
+                            envio.setMensaje("guerreros-");
+                            envio.setGuerreros(getUsuario(nombreAtacado).guerreros);
+                            enviarMensaje(envio, puertoDe(nombreAtacado));
+
+                            envio = new ObjetoEnvio();
+                            envio.setMensaje("guerreros-");
+                            envio.setGuerreros(getUsuario(usuarioQueAtaca).guerreros);
+                            enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+
+                            if(guerreroAtacado.vida <= 0){
+                                envio = new ObjetoEnvio();
+                                envio.setMensaje("anuncio-$ " + guerreroAtacado.nombre +  " de " + nombreAtacado + " ha muerto en manos de " + usuarioQueAtaca + "!");
+                                enviarATodos(envio, "-1");
+
+                                envio = new ObjetoEnvio();
+                                envio.setMensaje("muerte-Tu guerrero " + guerreroAtacado.nombre + " ha muerto!");
+                                enviarMensaje(envio, puertoDe(nombreAtacado));
+                                getUsuario(nombreAtacado).eliminarGuerrero(guerreroAtacado.nombre);
+
+                                if(getUsuario(nombreAtacado).guerreros.size() == 0){
+                                    envio = new ObjetoEnvio();
+                                    envio.setMensaje("anuncio-$ " + nombreAtacado + " ha sido derrotado!");
+                                    enviarATodos(envio, "-1");
+                                    envio = new ObjetoEnvio();
+                                    envio.setMensaje("derrota-Has sido derrotado!");
+                                    enviarMensaje(envio, puertoDe(nombreAtacado));
+                                    sacarDeLista(nombreAtacado);
+                                }
+
+                                envio = new ObjetoEnvio();
+                                envio.setMensaje("guerreros-");
+                                envio.setGuerreros(getUsuario(nombreAtacado).guerreros);
+                                enviarMensaje(envio, puertoDe(nombreAtacado));
+
+                                envio = new ObjetoEnvio();
+                                envio.setMensaje("guerreros-");
+                                envio.setGuerreros(getUsuario(usuarioQueAtaca).guerreros);
+                                enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+
+                                if(jugadoresFinales.size() == 1){
+                                    envio = new ObjetoEnvio();
+                                    envio.setMensaje("ganador-El jugador " + jugadoresFinales.get(0).getUsername() + " ha ganado");
+                                    enviarATodos(envio, "-1");
+                                }
+                                else{
+                                    siguienteTurno();
+                                }
+                            }
+                            else{
+                                siguienteTurno();
+                            }
+                        }
+                        else{
+                            envio.setMensaje("error-Esta arma ya ha sido usada, usa otra!");
+                            enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+                        }
+                    }
+
+                }
+                else{
+                    envio.setMensaje("error-No es tu turno!");
+                    enviarMensaje(envio, puertoDe(usuarioQueAtaca));
+                }
                 break;
+
             case "select":
                 String nombrePersonaje = partes[1];
                 String nombreJugador = partes[2];

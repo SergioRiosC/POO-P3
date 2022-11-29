@@ -143,8 +143,9 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         return tmp;
     }
 
-    private void reconocerMensaje(String mensaje){
+    private void reconocerMensaje(ObjetoEnvio entrada){
         System.out.println("INGRESAAAAANDO");
+        String mensaje = entrada.getMensaje();
         String[] partes = mensaje.split("-");
 
         System.out.println("Partes: " + partes[0]);
@@ -197,6 +198,70 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
                 turno_jugando.setText("");
                 turno_jugando.append("\n" + partes[1]);
                 break;
+
+            case "ataqueRecibido":
+                ataque_recibido.append("\n" + partes[1]);
+                break;
+
+            case "ataqueRealizado":
+                ataque_hecho.append("\n" + partes[1]);
+                break;
+
+            case "anuncio":
+                terminal.append("\n" + partes[1]);
+                break;
+
+            case "muerte":
+                JOptionPane.showMessageDialog(pantallas, partes[1], "Muerte", JOptionPane.WARNING_MESSAGE);
+                break;
+
+            case "derrota":
+                JOptionPane.showMessageDialog(pantallas, partes[1], "Derrota", JOptionPane.WARNING_MESSAGE);
+                terminal.setEnabled(false);
+                break;
+
+            case "ganador":
+                JOptionPane.showMessageDialog(pantallas, partes[1], "Ganador", JOptionPane.INFORMATION_MESSAGE);
+                pantallas.setSelectedIndex(4);
+                terminal.setEnabled(true);
+                break;
+
+            case "guerreros":
+                mis_guerros.setText("");
+
+                try{
+                    ArrayList<Guerrero> nuevosGuerreos = entrada.getGuerreros();
+                    for(Guerrero i: nuevosGuerreos){
+                        mis_guerros.append(i.nombre + "- vida: " + i.vida + "%\n");
+                        mis_guerros.append("Armas: " + i.getArmas() + "\n");
+                    }
+                }
+                catch (Exception e){
+                    System.out.println("Error al recibir guerreros");
+                }
+
+        }
+    }
+
+    private void armasAleatorias(){
+        ArrayList<Integer> nums = new ArrayList<>();
+        ArrayList<javax.swing.JComboBox> armas = new ArrayList<>();
+        Random random = new Random();
+        armas.add(arma1);
+        armas.add(arma2);
+        armas.add(arma3);
+        armas.add(arma4);
+        armas.add(arma5);
+
+        for(javax.swing.JComboBox i: armas){
+            while(true){
+                int num = random.nextInt(10);
+                if(!nums.contains(num)){
+                    nums.add(num);
+                    i.setSelectedIndex(num);
+                    break;
+                }
+            }
         }
     }
     
@@ -210,7 +275,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
                 ObjectInputStream entradaDatos = new ObjectInputStream(socket.getInputStream());
                 recibo = (ObjetoEnvio) entradaDatos.readObject();
                 System.out.println("RECIBIENDO MENSAJE: " + recibo.getMensaje());
-                reconocerMensaje(recibo.getMensaje());
+                reconocerMensaje(recibo);
                 socket.close();
             }
         }
@@ -295,9 +360,9 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         jScrollPane6 = new javax.swing.JScrollPane();
         mis_guerros = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTextArea6 = new javax.swing.JTextArea();
+        ataque_recibido = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTextArea7 = new javax.swing.JTextArea();
+        ataque_hecho = new javax.swing.JTextArea();
         jPanel7 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         nombre_personaje = new javax.swing.JTextField();
@@ -314,6 +379,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         jLabel13 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        A = new javax.swing.JButton();
 
         unirse_partida2.setBackground(new java.awt.Color(204, 204, 204));
         unirse_partida2.setForeground(new java.awt.Color(255, 255, 255));
@@ -710,23 +776,23 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
         jPanel6.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 10, 540, 560));
 
-        jTextArea6.setEditable(false);
-        jTextArea6.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea6.setColumns(20);
-        jTextArea6.setForeground(new java.awt.Color(153, 153, 0));
-        jTextArea6.setLineWrap(true);
-        jTextArea6.setRows(5);
-        jScrollPane7.setViewportView(jTextArea6);
+        ataque_recibido.setEditable(false);
+        ataque_recibido.setBackground(new java.awt.Color(0, 0, 0));
+        ataque_recibido.setColumns(20);
+        ataque_recibido.setForeground(new java.awt.Color(153, 153, 0));
+        ataque_recibido.setLineWrap(true);
+        ataque_recibido.setRows(5);
+        jScrollPane7.setViewportView(ataque_recibido);
 
         jPanel6.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 460, 280));
 
-        jTextArea7.setEditable(false);
-        jTextArea7.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea7.setColumns(20);
-        jTextArea7.setForeground(new java.awt.Color(153, 153, 0));
-        jTextArea7.setLineWrap(true);
-        jTextArea7.setRows(5);
-        jScrollPane8.setViewportView(jTextArea7);
+        ataque_hecho.setEditable(false);
+        ataque_hecho.setBackground(new java.awt.Color(0, 0, 0));
+        ataque_hecho.setColumns(20);
+        ataque_hecho.setForeground(new java.awt.Color(153, 153, 0));
+        ataque_hecho.setLineWrap(true);
+        ataque_hecho.setRows(5);
+        jScrollPane8.setViewportView(ataque_hecho);
 
         jPanel6.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 460, 270));
 
@@ -801,6 +867,14 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
             }
         });
         jPanel7.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 700, -1, -1));
+
+        A.setText("Armas Aleatorias");
+        A.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AActionPerformed(evt);
+            }
+        });
+        jPanel7.add(A, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 700, -1, -1));
 
         pantallas.addTab("tab7", jPanel7);
 
@@ -1008,7 +1082,7 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
                 else{
                     System.out.println(ultimoComando);
                     String[] comando = ultimoComando.split("-");
-                    if(comando[0].equals("chatprivado") || comando[0].equals("chat") || comando[0].equals("select")){
+                    if(comando[0].equals("chatprivado") || comando[0].equals("chat") || comando[0].equals("select") || comando[0].equals("atacar")){
                         enviarMensaje(ultimoComando + "-" + jugadorActual.getUsername());
                     }
                 }
@@ -1060,6 +1134,11 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         pantallas.setSelectedIndex(2);
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void AActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AActionPerformed
+        // TODO add your handling code here:
+        armasAleatorias();
+    }//GEN-LAST:event_AActionPerformed
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                                                 
         // TODO add your handling code here:
 
@@ -1070,37 +1149,42 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
         Random random = new Random();
 
-        if(archivos.length < cantidadGuerros){
-            if(!archivos2.contains(nombre + ".txt")){
-                Arma a1 = new Arma(arma1.getSelectedItem().toString(), random.nextInt(20, 100));
-                Arma a2 = new Arma(arma2.getSelectedItem().toString(), random.nextInt(20, 100));
-                Arma a3 = new Arma(arma3.getSelectedItem().toString(), random.nextInt(20, 100));
-                Arma a4 = new Arma(arma4.getSelectedItem().toString(), random.nextInt(20, 100));
-                Arma a5 = new Arma(arma5.getSelectedItem().toString(), random.nextInt(20, 100));
+        if(!nombre.equals("")){
+            if(archivos.length < cantidadGuerros){
+                if(!archivos2.contains(nombre + ".txt")){
+                    Arma a1 = new Arma(arma1.getSelectedItem().toString(), random.nextInt(20, 100));
+                    Arma a2 = new Arma(arma2.getSelectedItem().toString(), random.nextInt(20, 100));
+                    Arma a3 = new Arma(arma3.getSelectedItem().toString(), random.nextInt(20, 100));
+                    Arma a4 = new Arma(arma4.getSelectedItem().toString(), random.nextInt(20, 100));
+                    Arma a5 = new Arma(arma5.getSelectedItem().toString(), random.nextInt(20, 100));
 
-                ArrayList<Arma> armas = new ArrayList<>();
-                armas.add(a1);
-                armas.add(a2);
-                armas.add(a3);
-                armas.add(a4);
-                armas.add(a5);
+                    ArrayList<Arma> armas = new ArrayList<>();
+                    armas.add(a1);
+                    armas.add(a2);
+                    armas.add(a3);
+                    armas.add(a4);
+                    armas.add(a5);
 
-                Guerrero guerrero = new Guerrero(nombre, armas);
-                manejador.guardarGuerraro(jugadorActual.getUsername(), nombre, guerrero);
-                JOptionPane.showMessageDialog(pantallas, "Guerrero guardado!", "Guardado", JOptionPane.INFORMATION_MESSAGE);
-                nombre_personaje.setText("");
-                arma1.setSelectedIndex(0);
-                arma2.setSelectedIndex(0);
-                arma3.setSelectedIndex(0);
-                arma4.setSelectedIndex(0);
-                arma5.setSelectedIndex(0);
+                    Guerrero guerrero = new Guerrero(nombre, armas);
+                    manejador.guardarGuerraro(jugadorActual.getUsername(), nombre, guerrero);
+                    JOptionPane.showMessageDialog(pantallas, "Guerrero guardado!", "Guardado", JOptionPane.INFORMATION_MESSAGE);
+                    nombre_personaje.setText("");
+                    arma1.setSelectedIndex(0);
+                    arma2.setSelectedIndex(0);
+                    arma3.setSelectedIndex(0);
+                    arma4.setSelectedIndex(0);
+                    arma5.setSelectedIndex(0);
+                }
+                else{
+                    JOptionPane.showMessageDialog(pantallas, "Ya existe un personaje con ese nombre!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             else{
-                JOptionPane.showMessageDialog(pantallas, "Ya existe un personaje con ese nombre!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(pantallas, "Ya tienes 4 personajes!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         else{
-            JOptionPane.showMessageDialog(pantallas, "Ya tienes 4 personajes!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(pantallas, "Debe ingresar un nombre para el guerrero!!!", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }                                        
@@ -1142,11 +1226,14 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton A;
     private javax.swing.JComboBox<String> arma1;
     private javax.swing.JComboBox<String> arma2;
     private javax.swing.JComboBox<String> arma3;
     private javax.swing.JComboBox<String> arma4;
     private javax.swing.JComboBox<String> arma5;
+    private javax.swing.JTextArea ataque_hecho;
+    private javax.swing.JTextArea ataque_recibido;
     private javax.swing.JToggleButton atras;
     private javax.swing.JTextField clave;
     private javax.swing.JTextField clave_crear;
@@ -1195,8 +1282,6 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea6;
-    private javax.swing.JTextArea jTextArea7;
     private javax.swing.JTextArea jugadores_conectados;
     private javax.swing.JTextArea jugadores_partida;
     private javax.swing.JButton jugar;

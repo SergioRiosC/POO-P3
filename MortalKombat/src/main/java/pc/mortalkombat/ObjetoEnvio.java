@@ -1,6 +1,7 @@
 package pc.mortalkombat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ObjetoEnvio implements Serializable {
     public String getNombre() {
@@ -52,4 +53,14 @@ public class ObjetoEnvio implements Serializable {
     }
 
     private String nombre, ip, puerto, mensaje, miIp, miPuerto;
+
+    public ArrayList<Guerrero> getGuerreros() {
+        return guerreros;
+    }
+
+    public void setGuerreros(ArrayList<Guerrero> guerreros) {
+        this.guerreros = guerreros;
+    }
+
+    private ArrayList<Guerrero> guerreros;
 }

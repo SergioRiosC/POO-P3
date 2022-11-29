@@ -28,13 +28,28 @@ public class Guerrero implements Serializable{
     
     }
 
+    public Arma getArma(String tip){
+        for(Arma i: armas){
+            if(i.tipo.equals(tip)){
+                return i;
+            }
+        }
+        return null;
+    }
+
     public String getArmas(){
         String tmp = "";
 
         for(Arma i: armas){
-            tmp += i.tipo + "\t usada: " + i.usada + "\n";
+            tmp += i.tipo + "\t usada: " + i.usada + "\t ataque: " + i.ataque + "\n";
         }
         return tmp;
+    }
+    public void restarVida(int ataque){
+        vida-=ataque;
+        if(vida<0){
+            vida=0;
+        }
     }
     
 }

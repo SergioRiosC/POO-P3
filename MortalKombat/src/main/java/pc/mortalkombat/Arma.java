@@ -13,13 +13,15 @@ import java.io.Serializable;
 public class Arma implements Serializable{
     String tipo;
     int ataque;
-    
-    
-    String nombre;
+
     boolean usada=false;
     public Arma(String tipo, int ataque) {
         this.tipo = tipo;
         this.ataque = ataque;
+    }
+
+    public void setUsada(){
+        usada=true;
     }
     
     
