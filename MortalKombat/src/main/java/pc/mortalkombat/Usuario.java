@@ -25,6 +25,11 @@ public class Usuario implements Serializable{
     private int rendiciones=0;
     public int port;
 
+    public Usuario(String username, int puerto){
+        this.username=username;
+        this.port=puerto;
+    }
+
     public Usuario(String username, String password, int puerto) {
         this.username = username;
         this.password = password;

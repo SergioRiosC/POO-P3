@@ -18,9 +18,15 @@ public class Partida implements Serializable{
     String clave;
     String host;
 
-    public Partida(String clave,String host) {
+    public Partida(String clave, String host){
+        this.clave=clave;
+        this.host=host;
+    }
+
+    public Partida(String clave,String host, ArrayList<Usuario> jugadores) {
         this.clave = clave;
         this.host=host;
+        this.jugadores = jugadores;
     }
     
  

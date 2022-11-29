@@ -18,14 +18,18 @@ import java.util.ArrayList;
  */
 public class Servidor extends javax.swing.JFrame implements Runnable {
     ArrayList<ArrayList<String>> usuarios = new ArrayList<>(); //matriz de usuarios
+    ArrayList<Usuario> jugadoresFinales = new ArrayList<>(); //jugadores que se van a jugar
     private int puerto = 10201;
     private String password = "";
     private int hostPort = 0;
     private String host = "";
 
-    String mensajeTmp = "";
-    int puertoTmp = 0;
-    boolean temporal = false;
+    int turno = 0;
+    Usuario turnoActual;
+
+    boolean iniciada = false;
+
+    Partida partida;
     /**
      * Creates new form Servidor
      */
@@ -112,6 +116,30 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
         }
     }
 
+    private void sacarDeLista(String user){
+        for (ArrayList<String> usuario : usuarios) {
+            if(usuario.get(0).equals(user)){
+                usuarios.remove(usuario);
+                break;
+            }
+        }
+        jugadoresFinales.clear();
+        for(ArrayList<String> i: usuarios){
+            Usuario u = new Usuario(i.get(0), Integer.parseInt(i.get(1)));
+            jugadoresFinales.add(u);
+        }
+        turnoActual = jugadoresFinales.get(turno);
+    }
+
+    private int puertoDe(String name){
+        for(ArrayList<String> i: usuarios){
+            if(i.get(0).equals(name)){
+                return Integer.parseInt(i.get(1));
+            }
+        }
+        return 0;
+    }
+
     private void reconocerMensaje(ObjetoEnvio entrada) throws IOException {
         String mensaje = entrada.getMensaje();
         String[] partes = mensaje.split("-");
@@ -157,6 +185,9 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
             case "select":
                 break;
             case "rendirse":
+                sacarDeLista(partes[1]);
+                envio.setMensaje("rendirse-$ El jugador " + partes[1] + " se ha rendido! :/");
+                enviarATodos(envio, partes[1]);
                 break;
                 
             case "chat":
@@ -188,24 +219,50 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
                 break;
 
             case "pasarTurno":
+                if(partes[1].equals(turnoActual.getUsername())){
+                    turno++;
+                    if(turno == jugadoresFinales.size()){
+                        turno = 0;
+                    }
+                    turnoActual = jugadoresFinales.get(turno);
+                    envio.setMensaje("pasarTurno-$ El jugador " + partes[1] + " ha pasado el turno!");
+                    enviarATodos(envio, partes[1]);
+                }
+                else{
+                    envio.setMensaje("error-$ No es tu turno!");
+                    enviarMensaje(envio, puertoDe(partes[1]));
+                }
                 break;
             case "comodin":
                 break;
             case "conectar":
                 if(password.equals(partes[3])){
-                    envio.setMensaje("conecta-" + partes[1]);
-                    ArrayList<String> nuevoUsuario = new ArrayList<>();
-                    nuevoUsuario.add(partes[1]);
-                    nuevoUsuario.add(partes[2]);
-                    usuarios.add(nuevoUsuario);
-                    enviarATodos(envio, partes[1]);
-                    System.out.println("JUGADOR CONECTADO");
-                    enviarConectados(String.valueOf(entrada.getMiPuerto()));
+                    if(!iniciada){
+                        envio.setMensaje("conecta-" + partes[1]);
+                        ArrayList<String> nuevoUsuario = new ArrayList<>();
+                        nuevoUsuario.add(partes[1]);
+                        nuevoUsuario.add(partes[2]);
+                        usuarios.add(nuevoUsuario);
+                        enviarATodos(envio, partes[1]);
+                        System.out.println("JUGADOR CONECTADO");
+                        enviarConectados(String.valueOf(entrada.getMiPuerto()));
+                    }
+                    else{
+                        envio.setMensaje("alerta-El juego ya ha iniciado");
+                        enviarMensaje(envio, Integer.parseInt(partes[2]));
+                    }
+
                 }
                 break;
             case "comenzar":
                 enviarATodos(entrada, String.valueOf(hostPort));
                 enviarMensaje(entrada, hostPort);
+                for(ArrayList<String> i: usuarios){
+                    Usuario u = new Usuario(i.get(0), Integer.parseInt(i.get(1)));
+                    jugadoresFinales.add(u);
+                }
+                turnoActual = jugadoresFinales.get(turno);
+                iniciada = true;
                 break;
             default:
                 System.out.println("Se Marmol");

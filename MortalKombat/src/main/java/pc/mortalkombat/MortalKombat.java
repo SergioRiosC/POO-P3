@@ -33,6 +33,8 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     //Cliente c;
     Partida p;
 
+    boolean alerta = false;
+
     private Socket socket;
     private ObjetoEnvio mensaje;
     private String username;
@@ -142,6 +144,24 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
 
             case "chatprivado":
                 terminal.append("\n-> " + partes[1]);
+                break;
+
+            case "rendirse":
+                terminal.append("\n" + partes[1]);
+                break;
+
+            case "alerta":
+                    JOptionPane.showMessageDialog(pantallas, partes[1], "Alerta", JOptionPane.WARNING_MESSAGE);
+                    pantallas.setSelectedIndex(3);
+                    alerta = true;
+                    break;
+
+            case "pasarTurno":
+                terminal.append("\n" + partes[1]);
+                break;
+
+            case "error":
+                JOptionPane.showMessageDialog(pantallas, partes[1], "Error", JOptionPane.ERROR_MESSAGE);
                 break;
         }
     }
@@ -599,7 +619,11 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
         terminal.setRows(5);
         terminal.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                terminalKeyPressed(evt);
+                try {
+                    terminalKeyPressed(evt);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         jScrollPane3.setViewportView(terminal);
@@ -855,20 +879,23 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_jButton4ActionPerformed
 
     //aca es donde se lee la consola
-    private void terminalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_terminalKeyPressed
+    private void terminalKeyPressed(java.awt.event.KeyEvent evt) throws IOException {//GEN-FIRST:event_terminalKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String[] todo = terminal.getText().split("\n");
             String tmp = todo[todo.length - 1];
             if (!tmp.equals(ultimoComando)) {
                 ultimoComando = tmp;
-                System.out.println(ultimoComando);
-                String[] comando = ultimoComando.split("-");
-                if(comando[0].equals("chatprivado") || comando[0].equals("chat")){
-                    try{
+
+                if(ultimoComando.equals("rendirse") || ultimoComando.equals("pasarTurno")){
+                    enviarMensaje(ultimoComando + "-" + jugadorActual.getUsername());
+                }
+
+                else{
+                    System.out.println(ultimoComando);
+                    String[] comando = ultimoComando.split("-");
+                    if(comando[0].equals("chatprivado") || comando[0].equals("chat")){
                         enviarMensaje(ultimoComando + "-" + jugadorActual.getUsername());
-                    }
-                    catch(IOException e){
                     }
                 }
             }
