@@ -163,6 +163,11 @@ public class MortalKombat extends javax.swing.JFrame implements Runnable{
             case "error":
                 JOptionPane.showMessageDialog(pantallas, partes[1], "Error", JOptionPane.ERROR_MESSAGE);
                 break;
+
+            case "chao":
+                JOptionPane.showMessageDialog(pantallas, partes[1], "Error", JOptionPane.WARNING_MESSAGE);
+                terminal.setEnabled(false);
+                break;
         }
     }
     

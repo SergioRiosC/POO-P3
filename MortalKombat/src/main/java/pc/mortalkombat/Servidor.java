@@ -185,9 +185,12 @@ public class Servidor extends javax.swing.JFrame implements Runnable {
             case "select":
                 break;
             case "rendirse":
-                sacarDeLista(partes[1]);
                 envio.setMensaje("rendirse-$ El jugador " + partes[1] + " se ha rendido! :/");
                 enviarATodos(envio, partes[1]);
+                envio = new ObjetoEnvio();
+                envio.setMensaje("chao-Te has rendido, perdiste! :/");
+                enviarMensaje(envio, puertoDe(partes[1]));
+                sacarDeLista(partes[1]);
                 break;
                 
             case "chat":
